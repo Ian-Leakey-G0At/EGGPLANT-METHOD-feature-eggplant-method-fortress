@@ -25,7 +25,7 @@ export function UnpurchasedHomepage() {
       <div className="pb-28">
         <div className="px-4">
           <main>
-            <div className="flex flex-col space-y-8">
+            <div className="flex flex-col space-y-12">
               <HeroCarousel />
 
               {/* Title and Price */}

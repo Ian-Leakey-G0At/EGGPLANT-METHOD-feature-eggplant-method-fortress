@@ -14,7 +14,7 @@ export const AntechamberModal = ({ isOpen, redirectUrl, onClose }: AntechamberMo
   }
 
   const handleProceed = () => {
-    window.location.href = redirectUrl;
+    window.location.href = 'https://vendetta-machine.vercel.app/art/eggplant-method-1';
   };
 
   return (
