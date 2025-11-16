@@ -8,7 +8,7 @@ import { AntechamberModal } from './AntechamberModal';
 
 export function UnpurchasedHomepage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const VENDETTA_MACHINE_URL = 'https://polar.sh/placeholder-for-commander-to-update';
+  const VENDETTA_MACHINE_URL = 'https://vendetta-machine.vercel.app/art/eggplant-method-1';
 
   const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ export function UnpurchasedHomepage() {
           <h1 className="text-2xl font-bold text-white mb-2">
             Viral 2 Step Big Dick Growth Method 2025
           </h1>
-          <p className="text-3xl font-bold text-white mb-4">$10</p>
+          <p className="text-2xl font-bold text-white mb-4">$22.30</p>
         </section>
 
         <section id="reviews-section">
