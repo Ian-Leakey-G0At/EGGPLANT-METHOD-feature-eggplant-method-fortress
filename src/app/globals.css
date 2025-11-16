@@ -15,3 +15,13 @@ body {
     display: none; /* Safari and Chrome */
   }
 }
+
+@keyframes scroll-forward {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes scroll-backward {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}

@@ -22,11 +22,11 @@ export function UnpurchasedHomepage() {
         redirectUrl={VENDETTA_MACHINE_URL}
         onClose={() => setIsModalOpen(false)}
       />
-      <div className="px-4 mt-2">
+      <div>
         <HeroCarousel />
       </div>
 
-      <main className="p-4 pb-28">
+      <main className="pb-28">
         <section className="mb-6">
           <h1 className="text-2xl font-bold text-white mb-2">
             Viral 2 Step Big Dick Growth Method 2025
@@ -34,7 +34,7 @@ export function UnpurchasedHomepage() {
           <p className="text-3xl font-bold text-white mb-4">$10</p>
         </section>
 
-        <section className="mb-4" id="reviews-section">
+        <section id="reviews-section">
           <div className="flex justify-between items-center mb-2">
              <h2 className="text-lg font-semibold text-gray-400">
               Customer reviews
@@ -52,7 +52,7 @@ export function UnpurchasedHomepage() {
           <ReviewsCarousel />
         </section>
 
-        <div className="my-6 border-t border-gray-800"></div>
+        <div className="my-4 border-t border-gray-800"></div>
 
         <section className="text-sm space-y-4 text-gray-400">
           <p className="font-semibold">

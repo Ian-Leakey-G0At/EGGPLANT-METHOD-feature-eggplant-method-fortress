@@ -28,7 +28,7 @@ export default function RootLayout({
       >
         <div className="max-w-md mx-auto">
           <ConditionalHeader />
-          {children}
+          <main className="px-4 py-4">{children}</main>
         </div>
       </body>
     </html>
