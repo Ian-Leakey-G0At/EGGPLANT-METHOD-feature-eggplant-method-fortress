@@ -45,9 +45,9 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
   const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Placeholder video
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8">
+    <div className="w-full max-w-4xl mx-auto">
       {/* 1. The Video Player */}
-      <div className="mt-2">
+      <div>
         <div className="aspect-video mb-8">
           <iframe
             width="100%"

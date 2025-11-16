@@ -16,15 +16,6 @@ const config: Config = {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },
-      animation: {
-        'scroll-ping-pong': 'scroll-horizontal var(--animation-duration, 40s) linear infinite alternate',
-      },
-      keyframes: {
-        'scroll-horizontal': {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' },
-        },
-      }
     },
   },
   plugins: [],

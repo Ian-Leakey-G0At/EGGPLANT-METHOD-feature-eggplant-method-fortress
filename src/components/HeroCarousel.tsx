@@ -22,7 +22,7 @@ const HeroCarousel = () => {
   }, [emblaApi, updateSelectedIndex]);
 
   return (
-    <div className="relative w-full mt-4">
+    <div className="relative w-full">
       <div className="overflow-hidden rounded-lg" ref={emblaRef}>
         <div className="flex">
           {/* Slide 1: Video Player */}
