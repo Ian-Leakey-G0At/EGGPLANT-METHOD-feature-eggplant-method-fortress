@@ -28,14 +28,16 @@ export function UnpurchasedHomepage() {
             <div className="flex flex-col space-y-8">
               <HeroCarousel />
 
-              <section id="title-price-section">
+              {/* Title and Price */}
+              <section>
                 <h1 className="text-3xl font-bold text-white">
                   Viral 2 Step Big Dick Growth Method 2025
                 </h1>
                 <p className="text-4xl font-bold text-white mt-2">$10</p>
               </section>
 
-              <section id="reviews-section">
+              {/* Reviews */}
+              <section>
                 <div className="flex justify-between items-center">
                   <h2 className="text-lg font-semibold text-gray-300">
                     Customer reviews
@@ -53,7 +55,8 @@ export function UnpurchasedHomepage() {
                 <ReviewsCarousel />
               </section>
 
-              <section id="description-section">
+              {/* Description */}
+              <section>
                 <div className="space-y-4 text-gray-400 text-base">
                   <p>
                     The Simple 2-Step Method to Naturally Boost Length & Girth (watch
@@ -76,6 +79,7 @@ export function UnpurchasedHomepage() {
         </div>
       </div>
 
+      {/* The Fixed CTA Button - Outside and after the main content */}
       <div className="fixed bottom-0 left-0 right-0 z-20 bg-background-dark p-4 border-t border-gray-800">
         <div className="max-w-md mx-auto">
           <button
