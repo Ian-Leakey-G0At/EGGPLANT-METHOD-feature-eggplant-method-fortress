@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-email/components": "^1.0.1",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@upstash/redis": "^1.35.6",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
