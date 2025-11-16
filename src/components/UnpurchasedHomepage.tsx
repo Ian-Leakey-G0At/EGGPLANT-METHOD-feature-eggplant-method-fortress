@@ -1,11 +1,28 @@
+'use client';
+
 import Link from "next/link";
+import { useState } from 'react';
 import HeroCarousel from "@/components/HeroCarousel";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
+import { AntechamberModal } from './AntechamberModal';
 
 export function UnpurchasedHomepage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const VENDETTA_MACHINE_URL = 'https://polar.sh/placeholder-for-commander-to-update';
+
+  const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
   return (
     <>
-      <div className="px-4">
+      <AntechamberModal
+        isOpen={isModalOpen}
+        redirectUrl={VENDETTA_MACHINE_URL}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <div className="px-4 pt-2">
         <HeroCarousel />
       </div>
 
@@ -57,13 +74,13 @@ export function UnpurchasedHomepage() {
 
       <div className="fixed bottom-0 left-0 right-0 z-20 bg-background-dark p-4 border-t border-gray-800">
         <div className="max-w-md mx-auto">
-          <a
+          <button
+            onClick={handleOpenModal}
             className="block w-full text-center bg-primary text-gray-900 font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
-            href="https://polar.sh/placeholder-for-commander-to-update"
             data-testid="cta-button"
           >
             Get Video Now
-          </a>
+          </button>
         </div>
       </div>
     </>
