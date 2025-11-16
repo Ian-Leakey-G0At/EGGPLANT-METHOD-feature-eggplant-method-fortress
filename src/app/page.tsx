@@ -1,71 +1,31 @@
-import Link from "next/link";
-import HeroCarousel from "@/components/HeroCarousel";
-import ReviewsCarousel from "@/components/ReviewsCarousel";
+import { verifyTokenOnServer } from '@/lib/server-auth';
+import { UnpurchasedHomepage } from '@/components/UnpurchasedHomepage';
+import { PurchasedExperience } from '@/components/PurchasedExperience';
+import { AccessDenied } from '@/components/AccessDenied';
 
-export default function Home() {
-  return (
-    <>
-      <div className="px-4">
-        <HeroCarousel />
-      </div>
+// This is a React Server Component
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  const token = searchParams?.token;
 
-      <main className="p-4 pb-28">
-        <section className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-2">
-            Viral 2 Step Big Dick Growth Method 2025
-          </h1>
-          <p className="text-3xl font-bold text-white mb-4">$10</p>
-        </section>
+  // SCENARIO 1: No token present. Show the public sales page.
+  if (!token) {
+    return <UnpurchasedHomepage />;
+  }
 
-        <section className="mb-8" id="reviews-section">
-          <div className="flex justify-between items-center mb-4">
-             <h2 className="text-lg font-semibold text-gray-400">
-              Customer reviews
-            </h2>
-            <Link
-              className="inline-flex items-center text-sm font-normal text-lime-700 hover:opacity-80 transition-opacity"
-              href="/proof"
-            >
-              See Proof
-              <span className="material-icons-outlined text-base ml-1">
-                arrow_forward_ios
-              </span>
-            </Link>
-          </div>
-          <ReviewsCarousel />
-        </section>
+  // SCENARIO 2: Token is present. Attempt to verify it on the server.
+  // We assume the courseId for this single-product site is known.
+  const courseId = 'eggplant-method-v1'; // This should match the ID in your course-data lib
+  const verificationResult = await verifyTokenOnServer(token, courseId);
 
-        <div className="my-6 border-t border-gray-800"></div>
-
-        <section className="text-sm space-y-4 text-gray-400">
-          <p className="font-semibold">
-            The Simple 2-Step Method to Naturally Boost Length & Girth (watch
-            the short video on the thumbnail first)
-          </p>
-          <p>
-            Let's cut through the noise. No pills. No surgery. No awkward
-            gadgets. No sketchy exercises. Just a science-backed method that's
-            helping thousands of men in 2025 get serious results—safely and
-            naturally.
-          </p>
-          <p>
-            ✍️ Get the full 11-minute video for how it all works—no fluff, no
-            hard sell, just clear steps that deliver.
-          </p>
-        </section>
-      </main>
-
-      <div className="fixed bottom-0 left-0 right-0 z-20 bg-background-dark p-4 border-t border-gray-800">
-        <div className="max-w-md mx-auto">
-          <a
-            className="block w-full text-center bg-primary text-gray-900 font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
-            href="https://polar.sh/placeholder-for-commander-to-update"
-            data-testid="cta-button"
-          >
-            Get Video Now
-          </a>
-        </div>
-      </div>
-    </>
-  );
+  if (verificationResult.isValid) {
+    // SCENARIO 2A: Token is valid. Show the private course content.
+    return <PurchasedExperience courseId={courseId} />;
+  } else {
+    // SCENARIO 2B: Token is invalid. Show the access denied page.
+    return <AccessDenied reason={verificationResult.error} />;
+  }
 }

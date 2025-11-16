@@ -1,45 +1,43 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
+import { kv } from '@vercel/kv';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
+// Define the schema for the incoming request body
+const verifyCodeSchema = z.object({
+  token: z.string().min(1, { message: "Token cannot be empty" }),
+  courseId: z.string().min(1, { message: "courseId cannot be empty" }),
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { token, courseId } = await req.json();
+    const body = await request.json();
+    const validation = verifyCodeSchema.safeParse(body);
 
-    if (!token || !courseId) {
-      return new NextResponse('Missing token or courseId', { status: 400 });
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error.flatten().fieldErrors }, { status: 400 });
     }
+
+    const { token, courseId } = validation.data;
 
     const tokenKey = `token:${token}`;
-
-    // 1. It Consults the Ledger
-    const tokenData: { courseId: string; customerEmail: string } | null = await redis.get(tokenKey);
+    const tokenData = await kv.get<{ courseId: string; customerEmail: string }>(tokenKey);
 
     if (!tokenData) {
-      console.log(`Verification failed: Token ${token} not found.`);
-      return new NextResponse('Invalid token', { status: 401 });
+      return NextResponse.json({ error: 'Token not found or expired.' }, { status: 404 });
     }
 
-    // 2. It Performs the "Lock-and-Key" Check
     if (tokenData.courseId !== courseId) {
-      console.log(`Verification failed: Token ${token} has mismatched courseId. Expected ${courseId}, got ${tokenData.courseId}`);
-      // Note: We do not delete the token here, as it might be a simple user error (e.g., wrong link).
-      return new NextResponse('Token is not valid for this course', { status: 403 });
+      return NextResponse.json({ error: 'Token is not valid for this course.' }, { status: 403 });
     }
 
-    // 3. Access is granted. The key is NOT burned.
-    console.log(`Successful verification for token ${token} for course ${courseId}.`);
-    return new NextResponse(JSON.stringify({ success: true, message: 'Token verified' }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    // "Durable Key" model: We do NOT delete the token.
+    return NextResponse.json({ success: true, courseId: tokenData.courseId });
 
   } catch (error) {
-    console.error('Verification Error:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
+    console.error('[/api/verify-code] Error:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.flatten().fieldErrors }, { status: 400 });
+    }
+    return NextResponse.json({ error: 'An internal server error occurred.' }, { status: 500 });
   }
 }

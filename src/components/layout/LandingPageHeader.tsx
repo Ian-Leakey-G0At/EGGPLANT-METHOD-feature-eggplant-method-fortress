@@ -9,7 +9,10 @@ const LandingPageHeader = () => {
         <LogoIcon className="mr-2" />
         <span className="font-semibold text-lg">Method</span>
       </div>
-      <button aria-label="Upload">
+      <button
+        aria-label="Upload"
+        onClick={() => console.log('Upload functionality pending.')}
+      >
         <UploadIcon />
       </button>
     </header>
