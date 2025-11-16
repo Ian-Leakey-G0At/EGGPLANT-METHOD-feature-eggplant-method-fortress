@@ -32,7 +32,7 @@ export function UnpurchasedHomepage() {
             <h1 className="text-2xl font-bold text-white mb-2">
               Viral 2 Step Big Dick Growth Method 2025
             </h1>
-            <p className="text-3xl font-bold text-white">$10</p>
+            <p className="text-3xl font-bold text-white mb-4">$10</p>
           </section>
 
           <section id="reviews-section">
@@ -58,17 +58,18 @@ export function UnpurchasedHomepage() {
               The Simple 2-Step Method to Naturally Boost Length & Girth (watch
               the short video on the thumbnail first)
             </p>
-          <p>
-            Let's cut through the noise. No pills. No surgery. No awkward
-            gadgets. No sketchy exercises. Just a science-backed method that's
-            helping thousands of men in 2025 get serious results—safely and
-            naturally.
-          </p>
-          <p>
-            ✍️ Get the full 11-minute video for how it all works—no fluff, no
-            hard sell, just clear steps that deliver.
-          </p>
-        </section>
+            <p>
+              Let's cut through the noise. No pills. No surgery. No awkward
+              gadgets. No sketchy exercises. Just a science-backed method that's
+              helping thousands of men in 2025 get serious results—safely and
+              naturally.
+            </p>
+            <p>
+              ✍️ Get the full 11-minute video for how it all works—no fluff, no
+              hard sell, just clear steps that deliver.
+            </p>
+          </section>
+        </div>
       </main>
 
       <div className="fixed bottom-0 left-0 right-0 z-20 bg-background-dark p-4 border-t border-gray-800">
