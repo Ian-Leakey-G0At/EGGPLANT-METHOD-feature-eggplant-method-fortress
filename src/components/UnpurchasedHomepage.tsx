@@ -16,73 +16,77 @@ export function UnpurchasedHomepage() {
   };
 
   return (
-    <div className="pt-4">
+    <>
       <AntechamberModal
         isOpen={isModalOpen}
         redirectUrl={VENDETTA_MACHINE_URL}
         onClose={() => setIsModalOpen(false)}
       />
-      <div>
-        <HeroCarousel />
-      </div>
+      <div className="pb-28">
+        <div className="px-4">
+          <main>
+            <div className="flex flex-col space-y-8">
+              <HeroCarousel />
 
-      <main className="pb-28">
-        <div className="space-y-8">
-          <section>
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Viral 2 Step Big Dick Growth Method 2025
-            </h1>
-            <p className="text-3xl font-bold text-white mb-4">$10</p>
-          </section>
+              <section id="title-price-section">
+                <h1 className="text-3xl font-bold text-white">
+                  Viral 2 Step Big Dick Growth Method 2025
+                </h1>
+                <p className="text-4xl font-bold text-white mt-2">$10</p>
+              </section>
 
-          <section id="reviews-section">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold text-gray-400">
-                Customer reviews
-              </h2>
-              <Link
-                className="inline-flex items-center text-sm font-normal text-lime-700 hover:opacity-80 transition-opacity"
-                href="/proof"
-              >
-                See Proof
-                <span className="material-icons-outlined text-base ml-1">
-                  arrow_forward_ios
-                </span>
-              </Link>
+              <section id="reviews-section">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold text-gray-300">
+                    Customer reviews
+                  </h2>
+                  <Link
+                    className="text-sm font-medium text-lime-500 flex items-center"
+                    href="/proof"
+                  >
+                    See Proof
+                    <span className="material-icons-outlined text-base ml-1">
+                      arrow_forward_ios
+                    </span>
+                  </Link>
+                </div>
+                <ReviewsCarousel />
+              </section>
+
+              <section id="description-section">
+                <div className="space-y-4 text-gray-400 text-base">
+                  <p>
+                    The Simple 2-Step Method to Naturally Boost Length & Girth (watch
+                    the short video on the thumbnail first)
+                  </p>
+                  <p>
+                    Let's cut through the noise. No pills. No surgery. No awkward
+                    gadgets. No sketchy exercises. Just a science-backed method that's
+                    helping thousands of men in 2025 get serious results—safely and
+                    naturally.
+                  </p>
+                  <p>
+                    ✍️ Get the full 11-minute video for how it all works—no fluff, no
+                    hard sell, just clear steps that deliver.
+                  </p>
+                </div>
+              </section>
             </div>
-            <ReviewsCarousel />
-          </section>
-
-          <section className="text-sm space-y-4 text-gray-400">
-            <p className="font-semibold">
-              The Simple 2-Step Method to Naturally Boost Length & Girth (watch
-              the short video on the thumbnail first)
-            </p>
-            <p>
-              Let's cut through the noise. No pills. No surgery. No awkward
-              gadgets. No sketchy exercises. Just a science-backed method that's
-              helping thousands of men in 2025 get serious results—safely and
-              naturally.
-            </p>
-            <p>
-              ✍️ Get the full 11-minute video for how it all works—no fluff, no
-              hard sell, just clear steps that deliver.
-            </p>
-          </section>
+          </main>
         </div>
-      </main>
+      </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-20 bg-background-dark p-4 border-t border-gray-800">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleOpenModal}
-            className="block w-full text-center bg-primary text-gray-900 font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
+            className="w-full bg-lime-500 text-black font-bold py-4 rounded-lg"
             data-testid="cta-button"
           >
             Get Video Now
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

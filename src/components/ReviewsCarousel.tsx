@@ -5,9 +5,11 @@ const ReviewsCarousel = () => {
   return (
     <div className="flex overflow-x-auto space-x-4 px-4 scrollbar-hide">
       {reviews.map((review, index) => (
-        <div key={index} className="flex-shrink-0 w-80 h-40 bg-zinc-900 rounded-lg px-4 py-3 flex flex-col justify-between">
-          <p className="text-sm text-gray-400 line-clamp-5">{review.text}</p>
-          <p className="font-semibold text-xs text-white mt-2">{review.username}</p>
+        <div key={index} className="flex-shrink-0 w-80">
+          <div className="h-36 flex flex-col justify-between p-4 bg-gray-800 rounded-lg">
+            <p className="line-clamp-4 text-sm text-gray-200">{review.text}</p>
+            <p className="text-xs font-bold text-white mt-2">{review.username}</p>
+          </div>
         </div>
       ))}
     </div>
