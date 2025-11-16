@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import BackIcon from '@/components/icons/BackIcon';
 
 // Generates a set of 10 image URLs with a 2:3 aspect ratio (e.g., 112x168)
 const generateImageRow = (seed: number): string[] => {
@@ -17,15 +18,12 @@ const carousels = [
 const ProofPage = () => {
   return (
     <div className="flex flex-col">
-      <header className="h-14 px-4 flex items-center bg-background-dark/80 sticky top-0 z-10 border-b border-gray-800 backdrop-blur-sm">
-        <Link className="inline-flex items-center text-primary" href="/">
-          <span className="material-icons-outlined text-2xl">arrow_back_ios_new</span>
-          <span className="font-semibold text-base -ml-1.5">Home</span>
+      <header className="h-14 px-4 flex items-center justify-between bg-background-dark/80 sticky top-0 z-10 border-b border-gray-800 backdrop-blur-sm">
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <BackIcon className="w-6 h-6" />
         </Link>
-        <div className="flex-grow text-center">
-          <h1 className="text-lg font-semibold text-white">Proof Gallery</h1>
-        </div>
-        <div className="w-16"></div> {/* Spacer */}
+        <h1 className="text-lg font-semibold text-white">Proof Gallery</h1>
+        <div className="w-6" /> {/* Spacer for centering */}
       </header>
 
       <main className="flex-grow overflow-x-hidden py-2">

@@ -47,6 +47,7 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       {/* 1. The Video Player */}
+      <div className="pt-2">
       <div className="aspect-video mb-8">
         <iframe
           width="100%"

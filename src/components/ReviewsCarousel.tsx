@@ -21,7 +21,7 @@ const ReviewsCarousel = () => {
         <div className="flex">
           {reviews.map((review, index) => (
             <div key={index} className="flex-[0_0_80%] md:flex-[0_0_90%] ml-3">
-                <div className="p-4 bg-zinc-900 rounded-lg h-full">
+                <div className="px-4 py-2 bg-zinc-900 rounded-lg">
                     <p className="font-semibold text-sm text-white mb-1">{review.username}</p>
                     <p className="text-sm text-gray-400">{review.text}</p>
                 </div>
