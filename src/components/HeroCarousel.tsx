@@ -48,7 +48,7 @@ const HeroCarousel = () => {
         </div>
       </div>
       {/* Dynamic Indicators */}
-      <div className="flex justify-center space-x-2 mt-4">
+      <div className="flex justify-center space-x-2">
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
