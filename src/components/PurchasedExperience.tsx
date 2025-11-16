@@ -47,19 +47,19 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       {/* 1. The Video Player */}
-      <div className="pt-2">
-      <div className="aspect-video mb-8">
-        <iframe
-          width="100%"
-          height="100%"
-          src={videoUrl}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="rounded-lg"
-        ></iframe>
-      </div>
+      <div className="mt-2">
+        <div className="aspect-video mb-8">
+          <iframe
+            width="100%"
+            height="100%"
+            src={videoUrl}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="rounded-lg"
+          ></iframe>
+        </div>
       </div>
 
       {/* 2. The Description Component */}

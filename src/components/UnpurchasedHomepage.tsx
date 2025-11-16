@@ -22,7 +22,7 @@ export function UnpurchasedHomepage() {
         redirectUrl={VENDETTA_MACHINE_URL}
         onClose={() => setIsModalOpen(false)}
       />
-      <div className="px-4 pt-2">
+      <div className="px-4 mt-2">
         <HeroCarousel />
       </div>
 
@@ -34,8 +34,8 @@ export function UnpurchasedHomepage() {
           <p className="text-3xl font-bold text-white mb-4">$10</p>
         </section>
 
-        <section className="mb-8" id="reviews-section">
-          <div className="flex justify-between items-center mb-4">
+        <section className="mb-4" id="reviews-section">
+          <div className="flex justify-between items-center mb-2">
              <h2 className="text-lg font-semibold text-gray-400">
               Customer reviews
             </h2>

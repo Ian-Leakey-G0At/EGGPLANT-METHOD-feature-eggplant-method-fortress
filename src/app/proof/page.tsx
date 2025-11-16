@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import React from 'react';
-import BackIcon from '@/components/icons/BackIcon';
+import ProofGalleryHeader from '@/components/layout/ProofGalleryHeader';
 
 // Generates a set of 10 image URLs with a 2:3 aspect ratio (e.g., 112x168)
 const generateImageRow = (seed: number): string[] => {
@@ -8,25 +7,18 @@ const generateImageRow = (seed: number): string[] => {
 };
 
 const carousels = [
-  { images: generateImageRow(1), direction: 'ltr', duration: '40s' },
-  { images: generateImageRow(11), direction: 'rtl', duration: '45s' },
-  { images: generateImageRow(21), direction: 'ltr', duration: '38s' },
-  { images: generateImageRow(31), direction: 'rtl', duration: '50s' },
-  { images: generateImageRow(41), direction: 'ltr', duration: '42s' },
+  { images: generateImageRow(1), duration: '40s' },
+  { images: generateImageRow(11), duration: '45s' },
+  { images: generateImageRow(21), duration: '38s' },
+  { images: generateImageRow(31), duration: '50s' },
+  { images: generateImageRow(41), duration: '42s' },
 ];
 
 const ProofPage = () => {
   return (
     <div className="flex flex-col">
-      <header className="h-14 px-4 flex items-center justify-between bg-background-dark/80 sticky top-0 z-10 border-b border-gray-800 backdrop-blur-sm">
-        <Link href="/" className="hover:opacity-80 transition-opacity">
-          <BackIcon className="w-6 h-6" />
-        </Link>
-        <h1 className="text-lg font-semibold text-white">Proof Gallery</h1>
-        <div className="w-6" /> {/* Spacer for centering */}
-      </header>
-
-      <main className="flex-grow overflow-x-hidden py-2">
+      <ProofGalleryHeader />
+      <main className="flex-grow overflow-x-hidden py-2 mt-16">
         <div className="flex flex-col space-y-2">
           {carousels.map((carousel, rowIndex) => (
             <div
@@ -34,7 +26,7 @@ const ProofPage = () => {
               className="w-full overflow-hidden"
               style={{ '--animation-duration': carousel.duration } as React.CSSProperties}
             >
-              <div className={`flex ${carousel.direction === 'ltr' ? 'animate-scroll-ltr' : 'animate-scroll-rtl'}`}>
+              <div className="flex animate-scroll-ping-pong">
                 {/* Render the set of images twice for a seamless loop */}
                 {[...carousel.images, ...carousel.images].map((url, imgIndex) => (
                   <div key={imgIndex} className="flex-shrink-0 pr-2">

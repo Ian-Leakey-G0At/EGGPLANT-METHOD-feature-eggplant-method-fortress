@@ -17,17 +17,12 @@ const config: Config = {
         sans: ["Inter", "sans-serif"],
       },
       animation: {
-        'scroll-ltr': 'scroll-ltr var(--animation-duration, 40s) linear infinite',
-        'scroll-rtl': 'scroll-rtl var(--animation-duration, 40s) linear infinite',
+        'scroll-ping-pong': 'scroll-horizontal var(--animation-duration, 40s) linear infinite alternate',
       },
       keyframes: {
-        'scroll-ltr': {
+        'scroll-horizontal': {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-100%)' },
-        },
-        'scroll-rtl': {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(0)' },
         },
       }
     },
