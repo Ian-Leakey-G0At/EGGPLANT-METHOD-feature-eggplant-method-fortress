@@ -1,13 +1,4 @@
 
 > eggplant-method@0.1.0 dev
-> next dev
+> next dev --turbo
 
-  ▲ Next.js 14.2.3
-  - Local:        http://localhost:3000
-
- ✓ Starting...
- ✓ Ready in 2.2s
- ○ Compiling / ...
- ✓ Compiled / in 5.7s (526 modules)
- ✓ Compiled in 638ms (264 modules)
- GET / 200 in 6358ms

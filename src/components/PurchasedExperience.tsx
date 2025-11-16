@@ -60,6 +60,7 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
           className="rounded-lg"
         ></iframe>
       </div>
+      </div>
 
       {/* 2. The Description Component */}
       <section className="mb-12">
