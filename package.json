@@ -13,9 +13,9 @@
     "@upstash/redis": "^1.35.6",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "next": "^16.0.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-email": "^5.0.4",
     "resend": "^6.4.2",
     "zod": "^4.1.12"
