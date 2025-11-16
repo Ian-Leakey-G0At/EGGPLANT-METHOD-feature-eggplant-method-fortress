@@ -16,7 +16,7 @@ export function UnpurchasedHomepage() {
   };
 
   return (
-    <>
+    <div className="pt-4">
       <AntechamberModal
         isOpen={isModalOpen}
         redirectUrl={VENDETTA_MACHINE_URL}
@@ -27,38 +27,37 @@ export function UnpurchasedHomepage() {
       </div>
 
       <main className="pb-28">
-        <section className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-2">
-            Viral 2 Step Big Dick Growth Method 2025
-          </h1>
-          <p className="text-3xl font-bold text-white mb-4">$10</p>
-        </section>
+        <div className="space-y-8">
+          <section>
+            <h1 className="text-2xl font-bold text-white mb-2">
+              Viral 2 Step Big Dick Growth Method 2025
+            </h1>
+            <p className="text-3xl font-bold text-white">$10</p>
+          </section>
 
-        <section id="reviews-section">
-          <div className="flex justify-between items-center mb-2">
-             <h2 className="text-lg font-semibold text-gray-400">
-              Customer reviews
-            </h2>
-            <Link
-              className="inline-flex items-center text-sm font-normal text-lime-700 hover:opacity-80 transition-opacity"
-              href="/proof"
-            >
-              See Proof
-              <span className="material-icons-outlined text-base ml-1">
-                arrow_forward_ios
-              </span>
-            </Link>
-          </div>
-          <ReviewsCarousel />
-        </section>
+          <section id="reviews-section">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-lg font-semibold text-gray-400">
+                Customer reviews
+              </h2>
+              <Link
+                className="inline-flex items-center text-sm font-normal text-lime-700 hover:opacity-80 transition-opacity"
+                href="/proof"
+              >
+                See Proof
+                <span className="material-icons-outlined text-base ml-1">
+                  arrow_forward_ios
+                </span>
+              </Link>
+            </div>
+            <ReviewsCarousel />
+          </section>
 
-        <div className="my-4 border-t border-gray-800"></div>
-
-        <section className="text-sm space-y-4 text-gray-400">
-          <p className="font-semibold">
-            The Simple 2-Step Method to Naturally Boost Length & Girth (watch
-            the short video on the thumbnail first)
-          </p>
+          <section className="text-sm space-y-4 text-gray-400">
+            <p className="font-semibold">
+              The Simple 2-Step Method to Naturally Boost Length & Girth (watch
+              the short video on the thumbnail first)
+            </p>
           <p>
             Let's cut through the noise. No pills. No surgery. No awkward
             gadgets. No sketchy exercises. Just a science-backed method that's
@@ -83,6 +82,6 @@ export function UnpurchasedHomepage() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
