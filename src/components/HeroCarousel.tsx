@@ -7,18 +7,32 @@ import VideoPlayer from './VideoPlayer';
 const HeroCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isCarouselReady, setIsCarouselReady] = useState(false);
 
-  const updateSelectedIndex = useCallback(() => {
-    if (emblaApi) {
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    }
+  // Memoize the onSelect callback for stability.
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
   useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on('select', updateSelectedIndex);
-    updateSelectedIndex();
-  }, [emblaApi, updateSelectedIndex]);
+    if (!emblaApi) return; // Don't do anything until the carousel API is available.
+
+    // Use the 'init' event as the definitive signal that the carousel is ready.
+    const onInit = () => {
+      setIsCarouselReady(true);
+      onSelect(); // Set the initial slide index correctly.
+    };
+
+    emblaApi.on('init', onInit);
+    emblaApi.on('select', onSelect);
+
+    return () => {
+      // Clean up the event listeners when the component unmounts.
+      emblaApi.off('init', onInit);
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   return (
     <div className="relative w-full">
@@ -26,7 +40,11 @@ const HeroCarousel = () => {
         <div className="flex">
           {/* Slide 1: Video Player */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
-            <VideoPlayer url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" isPaused={selectedIndex !== 0} />
+            <VideoPlayer
+              url="https://dai.ly/k3v4JvyhXuSbE7EegYu"
+              isPaused={selectedIndex !== 0}
+              isReady={isCarouselReady} // This prop is now set reliably.
+            />
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">

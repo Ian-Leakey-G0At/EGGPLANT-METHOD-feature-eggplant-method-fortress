@@ -15,7 +15,7 @@ function PloyRatingSystem() {
   };
 
   return (
-    <section className="bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+    <section className="bg-ray-800/50 p-6 rounded-lg border border-gray-700">
       <h2 className="text-2xl font-bold mb-4">Share Your Results</h2>
       {submitted ? (
         <div className="text-center text-primary font-bold">
@@ -43,7 +43,7 @@ function PloyRatingSystem() {
 
 export function PurchasedExperience({ courseId }: { courseId: string }) {
   // In a real app, you would fetch the unlisted video URL from your course data
-  const videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Placeholder video
+  const videoUrl = "https://dai.ly/k6PeC8Hd8TVpsCEeie0"; // Placeholder video
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 flex flex-col space-y-4">
