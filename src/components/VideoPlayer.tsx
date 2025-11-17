@@ -1,11 +1,28 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import { ReactPlayerProps } from 'react-player'; // This will now resolve from our custom .d.ts file
 
+// Dynamically import the component without trying to infer its type here.
+const ReactPlayerClient = dynamic(() => import('react-player'), { ssr: false });
+
+// A clean, reusable Play icon component
 const PlayIcon = () => (
-    <svg height="100%" version="1.1" viewBox="0 0 68 48" width="100%">
-        <path fill="#f0f0f0" fillOpacity="0.8" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z M27,34.15V13.85L43.15,24L27,34.15z"></path>
-    </svg>
+  <svg
+    className="absolute inset-0 m-auto h-20 w-20 text-white opacity-75 transition-opacity group-hover:opacity-100"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+  >
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M10 18a8 8 0 1 0 0-16a8 8 0 0 0 0 16M9.555 7.168A1 1 0 0 0 8 8v4a1 1 0 0 0 1.555.832l3-2a1 1 0 0 0 0-1.664z"
+      clipRule="evenodd"
+    />
+  </svg>
 );
 
 interface VideoPlayerProps {
@@ -15,42 +32,49 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
   const [isActivated, setIsActivated] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<any>(null);
 
-  const handleThumbnailClick = () => {
-    setIsActivated(true);
-  };
-
-  useEffect(() => {
-    if (isActivated && videoRef.current) {
-      videoRef.current.play();
+  const handleReady = useCallback(() => {
+    // This is the definitive fix:
+    // We directly command the internal player instance to play.
+    // This bypasses any declarative prop race conditions and respects browser autoplay policies when muted.
+    if (playerRef.current) {
+      const internalPlayer = playerRef.current.getInternalPlayer();
+      if (internalPlayer) {
+        internalPlayer.play().catch((error: any) => {
+          console.error("Video play failed:", error);
+        });
+      }
     }
-  }, [isActivated]);
+  }, []);
 
   if (!isActivated) {
     return (
-      <div 
+      <div
         className="relative w-full h-full aspect-[16/9] bg-cover bg-center cursor-pointer group"
         style={{ backgroundImage: `url(${thumbnailUrl})` }}
-        onClick={handleThumbnailClick}
+        onClick={() => setIsActivated(true)}
       >
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 transition-all duration-300 group-hover:bg-opacity-20">
-          <div className="w-20 h-20 transition-all duration-300 group-hover:scale-110">
-            <PlayIcon />
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition-all duration-300"></div>
+        <PlayIcon />
       </div>
     );
   }
 
+  // We need to cast the type to include the 'ref' prop.
+  const TypedPlayer = ReactPlayerClient as React.ComponentType<ReactPlayerProps & { ref: React.Ref<any> }>;
+
   return (
-    <div className="relative w-full h-full aspect-[16/9]">
-      <video
-        ref={videoRef}
-        src={url}
+    <div className="relative aspect-[16/9]">
+      <TypedPlayer
+        ref={playerRef}
+        url={url}
+        playing={true} // Keep this for players that do respond to it
+        onReady={handleReady}
         width="100%"
         height="100%"
-        controls
+        controls={true}
+        muted={true} // Muting is essential for autoplay
         className="absolute top-0 left-0"
       />
     </div>
