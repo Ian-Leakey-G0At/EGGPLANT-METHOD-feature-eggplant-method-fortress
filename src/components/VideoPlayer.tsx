@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { ReactPlayerProps } from 'react-player'; // This will now resolve from our custom .d.ts file
 
@@ -31,45 +31,31 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
-  const [isActivated, setIsActivated] = useState(false);
   const playerRef = useRef<any>(null);
 
   const handleReady = useCallback(() => {
-    // This is the definitive fix:
-    // We directly command the internal player instance to play.
-    // This bypasses any declarative prop race conditions and respects browser autoplay policies when muted.
+    // The player is now ready, and the user has clicked (to get past the thumbnail).
+    // This is the safest moment to imperatively play.
     if (playerRef.current) {
       const internalPlayer = playerRef.current.getInternalPlayer();
       if (internalPlayer) {
         internalPlayer.play().catch((error: any) => {
-          console.error("Video play failed:", error);
+          console.error('Video play failed after thumbnail:', error);
         });
       }
     }
   }, []);
 
-  if (!isActivated) {
-    return (
-      <div
-        className="relative w-full h-full aspect-[16/9] bg-cover bg-center cursor-pointer group"
-        style={{ backgroundImage: `url(${thumbnailUrl})` }}
-        onClick={() => setIsActivated(true)}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition-all duration-300"></div>
-        <PlayIcon />
-      </div>
-    );
-  }
-
   // We need to cast the type to include the 'ref' prop.
   const TypedPlayer = ReactPlayerClient as React.ComponentType<ReactPlayerProps & { ref: React.Ref<any> }>;
 
   return (
-    <div className="relative aspect-[16/9]">
+    <div className="relative aspect-[16/9] w-full h-full bg-black">
       <TypedPlayer
         ref={playerRef}
         url={url}
-        playing={true} // Keep this for players that do respond to it
+        light={thumbnailUrl}
+        playIcon={<PlayIcon />} // Custom icon
         onReady={handleReady}
         width="100%"
         height="100%"
