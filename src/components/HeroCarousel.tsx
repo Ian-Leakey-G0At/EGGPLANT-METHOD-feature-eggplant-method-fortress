@@ -1,9 +1,8 @@
-
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import VideoPlayer from './VideoPlayer'; // Assuming VideoPlayer is in the same directory
+import VideoPlayer from './VideoPlayer';
 
 const HeroCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -18,7 +17,6 @@ const HeroCarousel = () => {
   useEffect(() => {
     if (!emblaApi) return;
     emblaApi.on('select', updateSelectedIndex);
-    // Initial update
     updateSelectedIndex();
   }, [emblaApi, updateSelectedIndex]);
 
@@ -28,7 +26,7 @@ const HeroCarousel = () => {
         <div className="flex">
           {/* Slide 1: Video Player */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
-            <VideoPlayer videoId="dQw4w9WgXcQ" />
+            <VideoPlayer url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" isPaused={selectedIndex !== 0} />
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
@@ -50,7 +48,7 @@ const HeroCarousel = () => {
       </div>
       {/* Dynamic Indicators */}
       <div className="flex justify-center space-x-2 mt-2">
-        {Array.from({ length: 3 }).map((_, index) => (
+        {emblaApi?.scrollSnapList().map((_, index) => (
           <div
             key={index}
             className={`h-1.5 transition-all duration-300 rounded-full ${

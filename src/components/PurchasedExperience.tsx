@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import VideoPlayer from './VideoPlayer';
 
 // A self-contained component for the fake rating system
 function PloyRatingSystem() {
@@ -42,22 +43,13 @@ function PloyRatingSystem() {
 
 export function PurchasedExperience({ courseId }: { courseId: string }) {
   // In a real app, you would fetch the unlisted video URL from your course data
-  const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Placeholder video
+  const videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Placeholder video
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 flex flex-col space-y-4">
       {/* 1. The Video Player */}
       <div className="aspect-video">
-        <iframe
-          width="100%"
-          height="100%"
-          src={videoUrl}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="rounded-lg"
-        ></iframe>
+        <VideoPlayer url={videoUrl} isPaused={false} />
       </div>
 
       {/* 2. The Description Component */}
