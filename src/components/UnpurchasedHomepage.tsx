@@ -22,10 +22,10 @@ export function UnpurchasedHomepage() {
         redirectUrl={VENDETTA_MACHINE_URL}
         onClose={() => setIsModalOpen(false)}
       />
-      <div className="pb-28">
+      <div className="pb-28 pt-4">
         <div className="px-4">
           <main>
-            <div className="flex flex-col space-y-12">
+            <div className="flex flex-col space-y-4">
               <HeroCarousel />
 
               {/* Title and Price */}
@@ -33,12 +33,12 @@ export function UnpurchasedHomepage() {
                 <h1 className="text-3xl font-bold text-white">
                   Viral 2 Step Big Dick Growth Method 2025
                 </h1>
-                <p className="text-4xl font-bold text-white mt-2">$10</p>
+                <p className="text-4xl font-bold text-lime-400 mt-2">$22.30</p>
               </section>
 
               {/* Reviews */}
               <section>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
                   <h2 className="text-lg font-semibold text-gray-300">
                     Customer reviews
                   </h2>
@@ -47,9 +47,7 @@ export function UnpurchasedHomepage() {
                     href="/proof"
                   >
                     See Proof
-                    <span className="material-icons-outlined text-base ml-1">
-                      arrow_forward_ios
-                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="24" viewBox="0 0 12 24"><path fill="currentColor" fill-rule="evenodd" d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414"/></svg>
                   </Link>
                 </div>
                 <ReviewsCarousel />

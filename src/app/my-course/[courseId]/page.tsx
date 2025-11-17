@@ -2,7 +2,7 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { course } from '@/lib/course-data';
+import { courseData } from '@/lib/course-data';
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
 
@@ -46,6 +46,14 @@ const CourseAccessPage = () => {
     verifyToken();
   }, [token, courseId]);
 
+  const course = courseData.find(c => c.id === courseId);
+
+  if (status === 'success' && !course) {
+    setErrorMessage(`Course content not found for ID: ${courseId}`);
+    setStatus('error');
+  }
+
+
   return (
     <div className="p-4 md:p-8">
       {status === 'verifying' && (
@@ -59,15 +67,14 @@ const CourseAccessPage = () => {
           <p className="text-red-300">{errorMessage}</p>
         </div>
       )}
-      {status === 'success' && (
+      {status === 'success' && course && (
         <div>
           <h1 className="text-3xl font-bold text-white mb-4">
-            {course.name}
+            {course.title}
           </h1>
           <div className="aspect-video bg-black rounded-lg">
-            {/* In a real scenario, this would be the secure video player component */}
              <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                src={`https://www.youtube.com/embed/${course.videoId}?autoplay=1`}
                 title="Course Video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -1,43 +1,48 @@
-import { kv } from '@vercel/kv';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
 
-// Define the schema for the incoming request body
-const verifyCodeSchema = z.object({
-  token: z.string().min(1, { message: "Token cannot be empty" }),
-  courseId: z.string().min(1, { message: "courseId cannot be empty" }),
-});
+import { NextRequest, NextResponse } from 'next/server';
+import { Redis } from '@upstash/redis';
 
-export async function POST(request: Request) {
+// Initialize Redis client
+const redis = Redis.fromEnv();
+
+interface TokenData {
+    fulfillmentId: string;
+    userEmail: string;
+}
+
+/**
+ * This endpoint verifies a user's access token.
+ * It checks for the token's existence in Vercel KV and, if valid,
+ * returns the associated fulfillment data without deleting the token.
+ */
+export async function POST(req: NextRequest) {
+  // 1. Parse the token from the request body
+  const { token } = await req.json();
+
+  if (!token || typeof token !== 'string') {
+    return new NextResponse('Token is required', { status: 400 });
+  }
+
   try {
-    const body = await request.json();
-    const validation = verifyCodeSchema.safeParse(body);
-
-    if (!validation.success) {
-      return NextResponse.json({ error: validation.error.flatten().fieldErrors }, { status: 400 });
-    }
-
-    const { token, courseId } = validation.data;
-
     const tokenKey = `token:${token}`;
-    const tokenData = await kv.get<{ courseId: string; customerEmail: string }>(tokenKey);
 
-    if (!tokenData) {
-      return NextResponse.json({ error: 'Token not found or expired.' }, { status: 404 });
+    // 2. Look up the token in Redis
+    const data = await redis.get<TokenData>(tokenKey);
+
+    if (!data) {
+      // Token not found or expired
+      return NextResponse.json({ isValid: false, error: 'Invalid or expired token.' }, { status: 404 });
     }
 
-    if (tokenData.courseId !== courseId) {
-      return NextResponse.json({ error: 'Token is not valid for this course.' }, { status: 403 });
-    }
+    // 3. Per the "Durable Key" model, we do not burn the token on read.
+    // Its validity is controlled by the 365-day expiry set during creation.
+    // await redis.del(tokenKey); // THIS LINE IS INTENTIONALLY OMITTED.
 
-    // "Durable Key" model: We do NOT delete the token.
-    return NextResponse.json({ success: true, courseId: tokenData.courseId });
+    // 4. If the token is valid, return success and the fulfillmentId
+    return NextResponse.json({ isValid: true, fulfillmentId: data.fulfillmentId });
 
   } catch (error) {
-    console.error('[/api/verify-code] Error:', error);
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.flatten().fieldErrors }, { status: 400 });
-    }
-    return NextResponse.json({ error: 'An internal server error occurred.' }, { status: 500 });
+    console.error('Verification Error:', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

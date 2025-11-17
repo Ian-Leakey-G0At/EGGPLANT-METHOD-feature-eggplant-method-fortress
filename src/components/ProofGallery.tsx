@@ -1,67 +1,40 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import useEmblaCarousel from 'embla-carousel-react'
+import React from 'react';
 
-// Generates a set of 10 image URLs with a 2:3 aspect ratio (e.g., 112x168)
+// Generates a set of 10 image URLs with a 2:3 aspect ratio
 const generateImageRow = (seed: number): string[] => {
   return Array.from({ length: 10 }, (_, i) => `https://picsum.photos/seed/${seed + i}/400/600`);
 };
 
-// Ping-pong slow motion carousel row
+// --- THE FINAL, CORRECTED CAROUSEL ROW COMPONENT ---
 const CarouselRow = ({
   images,
-  duration = 60 // Duration in seconds for a full cycle
+  direction = 'right-to-left',
+  duration = 60, // Duration in seconds for one full scroll
 }: {
-  images: string[],
-  duration?: number
+  images: string[];
+  direction?: 'left-to-right' | 'right-to-left';
+  duration?: number;
 }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: 'start',
-    containScroll: 'trimSnaps',
-    dragFree: true,
-  });
-
-  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    let scrollInterval: NodeJS.Timeout;
-
-    const startPingPong = () => {
-      scrollInterval = setInterval(() => {
-        const scrollProgress = emblaApi.scrollProgress();
-        const maxScroll = emblaApi.scrollSnapList().length - 1;
-
-        // Reverse direction at ends
-        if (scrollProgress >= 1 && direction === 1) {
-          setDirection(-1);
-        } else if (scrollProgress <= 0 && direction === -1) {
-          setDirection(1);
-        }
-
-        // Scroll gently
-        emblaApi.scrollNext(direction === 1);
-      }, (duration * 1000) / (images.length * 2)); // Adjust speed for gentle motion
-    };
-
-    startPingPong();
-
-    return () => clearInterval(scrollInterval);
-  }, [emblaApi, direction, duration, images.length]);
+  const animationName = direction === 'left-to-right' ? 'scroll-left-to-right' : 'scroll-right-to-left';
 
   return (
-    <div className="overflow-hidden" ref={emblaRef}>
-      <div className="flex">
-        {[...images, ...images].map((src, index) => ( // Duplicate for seamless loop
-          <div key={index} className="relative flex-[0_0_auto] w-2/5 md:w-1/5 pr-2">
-            <div className="aspect-[2/3]">
+    <div className="overflow-hidden">
+      <div
+        className="flex"
+        style={{
+          // The animation property is composed dynamically, NOW WITH a rock-solid 'alternate'
+          animation: `${animationName} ${duration}s linear infinite alternate`,
+        }}
+      >
+        {[...images, ...images].map((src, index) => (
+          <div key={index} className="relative flex-shrink-0 w-1/4 md:w-1/5 pr-2">
+            <div className="aspect-[2/3] overflow-hidden rounded-md">
               <img
                 src={src}
                 alt={`Proof image ${index + 1}`}
-                className="w-full h-full object-cover rounded-md"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
@@ -71,6 +44,7 @@ const CarouselRow = ({
   );
 };
 
+// --- THE UPDATED PROOF GALLERY COMPONENT ---
 export function ProofGallery() {
    const row1Images = generateImageRow(1);
    const row2Images = generateImageRow(11);
@@ -80,11 +54,11 @@ export function ProofGallery() {
 
    return (
       <div className="space-y-2 py-4">
-         <CarouselRow images={row1Images} duration={30} />
-         <CarouselRow images={row2Images} duration={35} />
-         <CarouselRow images={row3Images} duration={28} />
-         <CarouselRow images={row4Images} duration={40} />
-         <CarouselRow images={row5Images} duration={32} />
+         <CarouselRow images={row1Images} direction="right-to-left" duration={30} />
+         <CarouselRow images={row2Images} direction="left-to-right" duration={35} />
+         <CarouselRow images={row3Images} direction="right-to-left" duration={28} />
+         <CarouselRow images={row4Images} direction="left-to-right" duration={40} />
+         <CarouselRow images={row5Images} direction="right-to-left" duration={32} />
       </div>
    );
 }

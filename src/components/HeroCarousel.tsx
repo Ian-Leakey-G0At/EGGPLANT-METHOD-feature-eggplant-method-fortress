@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -27,7 +28,7 @@ const HeroCarousel = () => {
         <div className="flex">
           {/* Slide 1: Video Player */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
-            <VideoPlayer />
+            <VideoPlayer videoId="dQw4w9WgXcQ" />
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
@@ -48,7 +49,7 @@ const HeroCarousel = () => {
         </div>
       </div>
       {/* Dynamic Indicators */}
-      <div className="flex justify-center space-x-2">
+      <div className="flex justify-center space-x-2 mt-2">
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}

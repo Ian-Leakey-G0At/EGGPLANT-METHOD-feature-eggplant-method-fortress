@@ -45,25 +45,23 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
   const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Placeholder video
 
   return (
-    <div className="w-full max-w-4xl mx-auto pt-4">
+    <div className="w-full max-w-4xl mx-auto p-4 flex flex-col space-y-4">
       {/* 1. The Video Player */}
-      <div>
-        <div className="aspect-video mb-8">
-          <iframe
-            width="100%"
-            height="100%"
-            src={videoUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="rounded-lg"
-          ></iframe>
-        </div>
+      <div className="aspect-video">
+        <iframe
+          width="100%"
+          height="100%"
+          src={videoUrl}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="rounded-lg"
+        ></iframe>
       </div>
 
       {/* 2. The Description Component */}
-      <section className="mb-12">
+      <section>
         <h1 className="text-3xl font-bold mb-2">Viral 2 Step Big Dick Growth Method 2025</h1>
         <p className="text-gray-400">
           A detailed summary of the course content goes here. This section outlines the core principles and steps of the method shown in the video.

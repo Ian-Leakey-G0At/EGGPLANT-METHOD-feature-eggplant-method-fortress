@@ -1,13 +1,14 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ConditionalHeader from "@/components/layout/ConditionalHeader";
 import "./globals.css";
+import { Header } from "@/components/Header"; // Import the Header
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Viral Self-Improvement Method",
-  description: "The Simple 2-Step Method to Naturally Boost Length & Girth",
+  title: "The Eggplant Method",
+  description: "Unlock the secrets to viral content.",
 };
 
 export default function RootLayout({
@@ -16,20 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-          rel="stylesheet"
-        />
-      </head>
-      <body
-        className={`${inter.variable} font-sans bg-background-dark text-gray-300 antialiased`}
-      >
-        <div className="max-w-md mx-auto">
-          <ConditionalHeader />
-          <main className="px-4 py-4">{children}</main>
-        </div>
+    <html lang="en">
+      <body className={inter.className}>
+        <Header /> {/* Add the Header here */}
+        {children}
       </body>
     </html>
   );
