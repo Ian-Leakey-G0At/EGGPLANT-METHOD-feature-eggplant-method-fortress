@@ -8,7 +8,7 @@ import { AntechamberModal } from './AntechamberModal';
 
 export function UnpurchasedHomepage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const VENDETTA_MACHINE_URL = 'https://polar.sh/placeholder-for-commander-to-update';
+  const VENDETTA_MACHINE_URL = 'https://vendetta-machine.vercel.app/art/eggplant-method-1';
 
   const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -67,8 +67,10 @@ export function UnpurchasedHomepage() {
                     naturally.
                   </p>
                   <p>
-                    ✍️ Get the full 11-minute video for how it all works—no fluff, no
+                  We're talking about a straightforward 2-step system that's now been tested by over 6,700 men, with real, visible growth. It's based on human biology, not hype.✍️ Get the full 11-minute video for how it all works—no fluff, no
                     hard sell, just clear steps that deliver.
+                    Have questions or want to share your results? I'm always on Instagram. Shoot me a message—I'll personally reply. 📩
+                    Take the first step.
                   </p>
                 </div>
               </section>
