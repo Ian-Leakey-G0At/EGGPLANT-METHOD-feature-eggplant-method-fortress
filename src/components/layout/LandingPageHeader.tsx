@@ -1,6 +1,5 @@
 import React from 'react';
 import LogoIcon from '../icons/LogoIcon';
-import UploadIcon from '../icons/UploadIcon';
 
 const LandingPageHeader = () => {
   return (
