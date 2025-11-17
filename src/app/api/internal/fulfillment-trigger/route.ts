@@ -10,7 +10,7 @@ const redis = Redis.fromEnv();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // The shared secret for validating incoming requests
-const SHARED_SECRET = process.env.INTERNAL_API_SECRET;
+const SHARED_SECRET = process.env.EGGPLANT_METHOD_INTERNAL_API_SECRET;
 
 // Interface for the token data to be stored in Redis
 interface TokenData {
