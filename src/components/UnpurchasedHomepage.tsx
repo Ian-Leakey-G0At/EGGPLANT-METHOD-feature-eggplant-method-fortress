@@ -4,7 +4,6 @@ import Link from "next/link";
 import React, { useState } from 'react';
 import HeroCarousel from "@/components/HeroCarousel";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
-import StarRating from "./icons/StarRating";
 import { AntechamberModal } from './AntechamberModal';
 
 export function UnpurchasedHomepage() {
@@ -34,10 +33,7 @@ export function UnpurchasedHomepage() {
                 <h1 className="text-3xl font-bold text-white">
                   Viral 2 Step Big Dick Growth Method 2025
                 </h1>
-                <div className="flex justify-between items-center mt-2">
-                  <p className="text-4xl font-bold text-lime-400">$22.30</p>
-                  <StarRating />
-                </div>
+                <p className="text-4xl font-bold text-lime-400 mt-2">$22.30</p>
               </section>
 
               {/* Reviews */}
@@ -61,22 +57,18 @@ export function UnpurchasedHomepage() {
               <section className="mt-4">
                 <div className="space-y-4 text-gray-400 text-base">
                   <p>
-                    The Simple 2-Step Method to Naturally Boost Length & Girth (Watch the short video on the thumbnail first)
+                    The Simple 2-Step Method to Naturally Boost Length & Girth (watch
+                    the short video on the thumbnail first)
                   </p>
                   <p>
-                    Let's cut through the noise. No pills. No surgery. No awkward gadgets. No sketchy exercises. Just a science-backed method that's helping thousands of men in 2025 get serious results—safely and naturally.
+                    Let's cut through the noise. No pills. No surgery. No awkward
+                    gadgets. No sketchy exercises. Just a science-backed method that's
+                    helping thousands of men in 2025 get serious results—safely and
+                    naturally.
                   </p>
                   <p>
-                    We're talking about a straightforward 2-step system that's now been tested by over 6,700 men, with real, visible growth. It's based on human biology, not hype.
-                  </p>
-                  <p>
-                    👉 Get the full 11-minute video for how it all works—no fluff, no hard sell, just clear steps that deliver.
-                  </p>
-                  <p>
-                    Have questions or want to share your results? I'm always on Instagram. Shoot me a message—I'll personally reply. 📩
-                  </p>
-                  <p>
-                    Take the first step.
+                    ✍️ Get the full 11-minute video for how it all works—no fluff, no
+                    hard sell, just clear steps that deliver.
                   </p>
                 </div>
               </section>
