@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { ReactPlayerProps } from 'react-player'; // This will now resolve from our custom .d.ts file
 
@@ -11,11 +11,17 @@ const ReactPlayerClient = dynamic(() => import('react-player'), { ssr: false });
 const PlayIcon = () => (
   <svg
     className="absolute inset-0 m-auto h-20 w-20 text-white opacity-75 transition-opacity group-hover:opacity-100"
-    viewBox="0 0 24 24"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
   >
-    <path d="M8 5v14l11-7z" />
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      d="M10 18a8 8 0 1 0 0-16a8 8 0 0 0 0 16M9.555 7.168A1 1 0 0 0 8 8v4a1 1 0 0 0 1.555.832l3-2a1 1 0 0 0 0-1.664z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
@@ -26,6 +32,21 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
   const [isActivated, setIsActivated] = useState(false);
+  const playerRef = useRef<any>(null);
+
+  const handleReady = useCallback(() => {
+    // This is the definitive fix:
+    // We directly command the internal player instance to play.
+    // This bypasses any declarative prop race conditions and respects browser autoplay policies when muted.
+    if (playerRef.current) {
+      const internalPlayer = playerRef.current.getInternalPlayer();
+      if (internalPlayer) {
+        internalPlayer.play().catch((error: any) => {
+          console.error("Video play failed:", error);
+        });
+      }
+    }
+  }, []);
 
   if (!isActivated) {
     return (
@@ -40,18 +61,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
     );
   }
 
-  // Cast the client to the correct props type to satisfy TypeScript
-  const TypedPlayer = ReactPlayerClient as React.ComponentType<ReactPlayerProps>;
+  // We need to cast the type to include the 'ref' prop.
+  const TypedPlayer = ReactPlayerClient as React.ComponentType<ReactPlayerProps & { ref: React.Ref<any> }>;
 
   return (
     <div className="relative aspect-[16/9]">
       <TypedPlayer
+        ref={playerRef}
         url={url}
-        playing={true}
+        playing={true} // Keep this for players that do respond to it
+        onReady={handleReady}
         width="100%"
         height="100%"
         controls={true}
-        muted={false}
+        muted={true} // Muting is essential for autoplay
         className="absolute top-0 left-0"
       />
     </div>
