@@ -22,7 +22,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 To run this project, you will need to create a `.env.local` file and add the following environment variables. These must also be configured in the Vercel project settings for deployment.
 
-- `INTERNAL_API_SECRET_KEY`: The shared secret for authenticating requests from the `service-connector`.
+- `EGGPLANT_METHOD_INTERNAL_API_SECRET_KEY`: The shared secret for authenticating requests from the `service-connector`.
 - `RESEND_API_KEY`: The API key for the Resend email service.
 - `KV_URL`: Vercel KV connection URL.
 - `KV_REST_API_URL`: Vercel KV REST API URL.
