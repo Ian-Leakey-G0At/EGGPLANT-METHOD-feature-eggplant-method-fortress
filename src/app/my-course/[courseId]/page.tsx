@@ -2,7 +2,8 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { courseData } from '@/lib/course-data';
+import { course } from '@/lib/course-data'; // Use the new centralized course data
+import VideoPlayer from '@/components/VideoPlayer'; // Import our new player
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
 
@@ -19,6 +20,12 @@ const CourseAccessPage = () => {
     const verifyToken = async () => {
       if (!token || !courseId) {
         setErrorMessage('Missing access token or course ID in URL.');
+        setStatus('error');
+        return;
+      }
+
+      if (courseId !== course.id) {
+        setErrorMessage(`Invalid course ID.`);
         setStatus('error');
         return;
       }
@@ -46,18 +53,10 @@ const CourseAccessPage = () => {
     verifyToken();
   }, [token, courseId]);
 
-  const course = courseData.find(c => c.id === courseId);
-
-  if (status === 'success' && !course) {
-    setErrorMessage(`Course content not found for ID: ${courseId}`);
-    setStatus('error');
-  }
-
-
   return (
-    <div className="p-4 md:p-8">
+    <div className="w-full max-w-4xl mx-auto px-4 pt-4">
       {status === 'verifying' && (
-        <div className="text-center">
+        <div className="text-center py-10">
           <p className="text-lg animate-pulse">Verifying Access...</p>
         </div>
       )}
@@ -67,21 +66,23 @@ const CourseAccessPage = () => {
           <p className="text-red-300">{errorMessage}</p>
         </div>
       )}
-      {status === 'success' && course && (
+      {status === 'success' && (
         <div>
-          <h1 className="text-3xl font-bold text-white mb-4">
-            {course.title}
-          </h1>
-          <div className="aspect-video bg-black rounded-lg">
-             <iframe
-                src={`https://www.youtube.com/embed/${course.videoId}?autoplay=1`}
-                title="Course Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full rounded-lg"
-            ></iframe>
+          {/* 1. The Video Player - Radically Simplified */}
+          <div className="aspect-video mb-8">
+            <VideoPlayer
+              url={course.fullVideoUrl}
+              thumbnailUrl={course.fullThumbnailUrl}
+            />
           </div>
+
+          {/* 2. The Description Component */}
+          <section className="mb-12">
+            <h1 className="text-3xl font-bold mb-2">{course.name}</h1>
+            <p className="text-gray-400">
+              A detailed summary of the course content goes here...
+            </p>
+          </section>
         </div>
       )}
     </div>

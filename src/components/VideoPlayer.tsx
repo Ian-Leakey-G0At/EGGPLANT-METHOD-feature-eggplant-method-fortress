@@ -1,63 +1,58 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
-import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from 'react';
+
+const PlayIcon = () => (
+    <svg height="100%" version="1.1" viewBox="0 0 68 48" width="100%">
+        <path fill="#f0f0f0" fillOpacity="0.8" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z M27,34.15V13.85L43.15,24L27,34.15z"></path>
+    </svg>
+);
 
 interface VideoPlayerProps {
   url: string;
-  playing: boolean;
+  thumbnailUrl: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, playing }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
+  const [isActivated, setIsActivated] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
 
-  // The core of the new strategy: direct, imperative control of the video element.
+  const handleThumbnailClick = () => {
+    setIsActivated(true);
+  };
+
   useEffect(() => {
-    if (videoRef.current) {
-      if (playing) {
-        // The `play()` method returns a promise. We handle potential errors.
-        videoRef.current.play().catch(error => {
-          // Autoplay was prevented. This is a common browser policy.
-          // We can mute the video and try again, as muted autoplay is often allowed.
-          if (error.name === 'NotAllowedError') {
-            console.warn('Autoplay was prevented. Muting and retrying.');
-            setMuted(true);
-            if(videoRef.current) {
-              videoRef.current.play();
-            }
-          } else {
-            console.error('Error attempting to play video:', error);
-          }
-        });
-      } else {
-        videoRef.current.pause();
-      }
+    if (isActivated && videoRef.current) {
+      videoRef.current.play();
     }
-  }, [playing]); // This effect re-runs whenever the `playing` command changes.
+  }, [isActivated]);
+
+  if (!isActivated) {
+    return (
+      <div 
+        className="relative w-full h-full aspect-[16/9] bg-cover bg-center cursor-pointer group"
+        style={{ backgroundImage: `url(${thumbnailUrl})` }}
+        onClick={handleThumbnailClick}
+      >
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 transition-all duration-300 group-hover:bg-opacity-20">
+          <div className="w-20 h-20 transition-all duration-300 group-hover:scale-110">
+            <PlayIcon />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="relative w-full h-full group">
+    <div className="relative w-full h-full aspect-[16/9]">
       <video
         ref={videoRef}
         src={url}
-        muted={muted}
-        loop
-        playsInline // Important for iOS autoplay.
-        className="w-full h-full object-cover"
-        onCanPlay={() => {
-          // When the video is ready, re-evaluate the play state.
-          // This handles cases where the `playing` prop was true before the video loaded.
-          if (playing && videoRef.current) {
-             videoRef.current.play().catch(e => console.error("Error onCanPlay:", e));
-          }
-        }}
+        width="100%"
+        height="100%"
+        controls
+        className="absolute top-0 left-0"
       />
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-        <button onClick={() => setMuted(!muted)} className="text-white">
-          {muted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
-        </button>
-      </div>
     </div>
   );
 };

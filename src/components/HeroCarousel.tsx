@@ -1,36 +1,45 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 import VideoPlayer from './VideoPlayer';
+import { course } from '@/lib/course-data';
 
-// The API is the second item in the tuple returned by the hook
-type EmblaApiType = UseEmblaCarouselType[1];
-
-interface HeroCarouselProps {
-  setApi: (api: EmblaApiType) => void;
-  selectedIndex: number;
-}
-
-const HeroCarousel = ({ setApi, selectedIndex }: HeroCarouselProps) => {
+const HeroCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const updateSelectedIndex = useCallback(() => {
+    if (emblaApi) {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setScrollSnaps(emblaApi.scrollSnapList());
+    }
+  }, [emblaApi]);
 
   useEffect(() => {
-    if (emblaApi) {
-      setApi(emblaApi);
-    }
-  }, [emblaApi, setApi]);
+    if (!emblaApi) return;
+    updateSelectedIndex();
+    emblaApi.on('select', updateSelectedIndex);
+    emblaApi.on('reInit', updateSelectedIndex);
+    return () => {
+      emblaApi.off('select', updateSelectedIndex);
+      emblaApi.off('reInit', updateSelectedIndex);
+    };
+  }, [emblaApi, updateSelectedIndex]);
 
   return (
     <div className="relative w-full">
       <div className="overflow-hidden rounded-lg" ref={emblaRef}>
         <div className="flex">
+          {/* Slide 1: Video Player - Radically Simplified */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
             <VideoPlayer
-              url="https://dai.ly/kYPpMYI5r7f94TEegYu"
-              playing={selectedIndex === 0}
+              url={course.teaserVideoUrl}
+              thumbnailUrl={course.teaserThumbnailUrl}
             />
           </div>
+          {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
             <img
               src="https://picsum.photos/seed/hero1/1280/720"
@@ -38,6 +47,7 @@ const HeroCarousel = ({ setApi, selectedIndex }: HeroCarouselProps) => {
               className="w-full h-full object-cover"
             />
           </div>
+          {/* Slide 3: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
             <img
               src="https://picsum.photos/seed/hero2/1280/720"
@@ -46,6 +56,18 @@ const HeroCarousel = ({ setApi, selectedIndex }: HeroCarouselProps) => {
             />
           </div>
         </div>
+      </div>
+
+      {/* Pagination Indicators - Now part of this component */}
+      <div className="flex justify-center space-x-2 py-2 my-2">
+        {scrollSnaps.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => emblaApi && emblaApi.scrollTo(index)}
+            className={`h-1 rounded-sm transition-all ${index === selectedIndex ? 'bg-primary w-6' : 'bg-gray-600 w-3'}`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </div>
   );

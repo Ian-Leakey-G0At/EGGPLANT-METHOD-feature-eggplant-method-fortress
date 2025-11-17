@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import { AccessEmail } from '@/emails/AccessEmail';
-import { courseData } from '@/lib/course-data';
+import { course } from '@/lib/course-data'; // Corrected import
 
 // Initialize Redis and Resend clients
 const redis = Redis.fromEnv();
@@ -18,12 +18,6 @@ interface TokenData {
     userEmail: string;
 }
 
-/**
- * This endpoint is the fulfillment trigger called by our service-connector
- * after a successful payment. It generates a unique access token,
- * stores it in Vercel KV with a 1-year expiry, and sends the user
- * an email with their unique access link.
- */
 export async function POST(req: NextRequest) {
   // 1. Validate Authorization Header
   const authHeader = req.headers.get('Authorization');
@@ -37,9 +31,8 @@ export async function POST(req: NextRequest) {
     return new NextResponse('Missing fulfillmentId or userEmail', { status: 400 });
   }
 
-  // 3. Find Corresponding Course Data
-  const course = courseData.find(c => c.id === fulfillmentId);
-  if (!course) {
+  // 3. Validate against the single course ID
+  if (course.id !== fulfillmentId) {
     return new NextResponse(`Course not found for fulfillmentId: ${fulfillmentId}`, { status: 404 });
   }
 
@@ -49,24 +42,23 @@ export async function POST(req: NextRequest) {
     const tokenKey = `token:${token}`;
     const tokenData: TokenData = { fulfillmentId, userEmail };
 
-    // 5. Store the Token in Redis with a 1-Year Expiry (Durable Key Model)
+    // 5. Store the Token in Redis with a 1-Year Expiry
     const ONE_YEAR_IN_SECONDS = 86400 * 365;
     await redis.set(tokenKey, JSON.stringify(tokenData), { ex: ONE_YEAR_IN_SECONDS });
 
     // 6. Construct the Access URL
-    const accessUrl = `${process.env.NEXT_PUBLIC_BASE_URL}?token=${token}`;
+    const accessUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/my-course/${course.id}?token=${token}`;
 
     // 7. Send the Access Email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'Commander <noreply@yourdomain.com>', // Replace with your domain
+      from: 'Commander <noreply@yourdomain.com>', 
       to: [userEmail],
-      subject: `Your Access to: ${course.title}`,
-      react: AccessEmail({ accessUrl, courseTitle: course.title }),
+      subject: `Your Access to: ${course.name}`,
+      react: AccessEmail({ accessUrl, courseTitle: course.name }),
     });
 
     if (error) {
       console.error('Error sending email:', error);
-      // Note: In a real-world scenario, you might have a retry mechanism or alert system here
       return new NextResponse('Error sending confirmation email.', { status: 500 });
     }
 
