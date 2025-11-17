@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import { AccessEmail } from '@/emails/AccessEmail';
-import { course } from '@/lib/course-data'; // Corrected import
+import { courses } from '@/lib/course-data'; // Corrected import
 
 // Initialize Redis and Resend clients
 const redis = Redis.fromEnv();
@@ -31,8 +31,11 @@ export async function POST(req: NextRequest) {
     return new NextResponse('Missing fulfillmentId or userEmail', { status: 400 });
   }
 
-  // 3. Validate against the single course ID
-  if (course.id !== fulfillmentId) {
+  // 3. Look up the purchased course from our master list
+  const purchasedCourse = courses.find(c => c.id === fulfillmentId);
+
+  if (!purchasedCourse) {
+    console.error(`CRITICAL: Fulfillment request for unknown course ID: ${fulfillmentId}`);
     return new NextResponse(`Course not found for fulfillmentId: ${fulfillmentId}`, { status: 404 });
   }
 
@@ -47,14 +50,14 @@ export async function POST(req: NextRequest) {
     await redis.set(tokenKey, JSON.stringify(tokenData), { ex: ONE_YEAR_IN_SECONDS });
 
     // 6. Construct the Access URL
-    const accessUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/my-course/${course.id}?token=${token}`;
+    const accessUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/my-course/${purchasedCourse.id}?token=${token}`;
 
     // 7. Send the Access Email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'Commander <noreply@yourdomain.com>', 
+      from: 'Commander <noreply@yourdomain.com>',
       to: [userEmail],
-      subject: `Your Access to: ${course.name}`,
-      react: AccessEmail({ accessUrl, courseTitle: course.name }),
+      subject: `Your Access to: ${purchasedCourse.name}`,
+      react: AccessEmail({ accessUrl, courseTitle: purchasedCourse.name }),
     });
 
     if (error) {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import VideoPlayer from './VideoPlayer';
-import { course } from '@/lib/course-data';
+import { courses } from '@/lib/course-data';
 
 // A simple rating component
 const PloyRatingSystem = () => {
@@ -25,10 +25,9 @@ const PloyRatingSystem = () => {
 };
 
 export function PurchasedExperience({ courseId }: { courseId: string }) {
-  // In a real app, you might fetch course details based on courseId
-  // For this example, we'll use the static import
+  const course = courses.find((c) => c.id === courseId);
 
-  if (courseId !== course.id) {
+  if (!course) {
     return <p>Course not found.</p>;
   }
 
