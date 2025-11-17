@@ -1,14 +1,35 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { UseEmblaCarouselType } from 'embla-carousel-react';
 import HeroCarousel from "@/components/HeroCarousel";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { AntechamberModal } from './AntechamberModal';
 
+type EmblaApiType = UseEmblaCarouselType[1];
+
 export function UnpurchasedHomepage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const VENDETTA_MACHINE_URL = 'https://polar.sh/placeholder-for-commander-to-update';
+
+  const [emblaApi, setEmblaApi] = useState<EmblaApiType | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const scrollTo = useCallback((index: number) => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
 
   const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,11 +46,23 @@ export function UnpurchasedHomepage() {
       <div className="pb-28 pt-4">
         <div className="px-4">
           <main>
-            <div className="flex flex-col space-y-4">
-              <HeroCarousel />
+            <div className="flex flex-col">
+              <HeroCarousel setApi={setEmblaApi} selectedIndex={selectedIndex} />
+
+              {/* Pagination Indicators */}
+              <div className="flex justify-center space-x-2 py-2 my-2">
+                {scrollSnaps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => scrollTo(index)}
+                    className={`h-1 rounded-sm transition-all ${index === selectedIndex ? 'bg-primary w-6' : 'bg-gray-600 w-3'}`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
 
               {/* Title and Price */}
-              <section>
+              <section className="pt-2">
                 <h1 className="text-3xl font-bold text-white">
                   Viral 2 Step Big Dick Growth Method 2025
                 </h1>
@@ -37,7 +70,7 @@ export function UnpurchasedHomepage() {
               </section>
 
               {/* Reviews */}
-              <section>
+              <section className="mt-4">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-lg font-semibold text-gray-300">
                     Customer reviews
@@ -54,7 +87,7 @@ export function UnpurchasedHomepage() {
               </section>
 
               {/* Description */}
-              <section>
+              <section className="mt-4">
                 <div className="space-y-4 text-gray-400 text-base">
                   <p>
                     The Simple 2-Step Method to Naturally Boost Length & Girth (watch
