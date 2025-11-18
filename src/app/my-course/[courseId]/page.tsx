@@ -2,7 +2,7 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { course } from '@/lib/course-data'; // Use the new centralized course data
+import { courses } from '@/lib/course-data'; // Use the new centralized course data
 import VideoPlayer from '@/components/VideoPlayer'; // Import our new player
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
@@ -16,6 +16,8 @@ const CourseAccessPage = () => {
   const courseId = params.courseId as string;
   const token = searchParams.get('token');
 
+  const course = courses.find((c) => c.id === courseId);
+
   useEffect(() => {
     const verifyToken = async () => {
       if (!token || !courseId) {
@@ -24,7 +26,7 @@ const CourseAccessPage = () => {
         return;
       }
 
-      if (courseId !== course.id) {
+      if (!course) {
         setErrorMessage(`Invalid course ID.`);
         setStatus('error');
         return;
@@ -51,7 +53,7 @@ const CourseAccessPage = () => {
     };
 
     verifyToken();
-  }, [token, courseId]);
+  }, [token, courseId, course]);
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 pt-4">
@@ -66,7 +68,7 @@ const CourseAccessPage = () => {
           <p className="text-red-300">{errorMessage}</p>
         </div>
       )}
-      {status === 'success' && (
+      {status === 'success' && course && (
         <div>
           {/* 1. The Video Player - Radically Simplified */}
           <div className="aspect-video mb-8">
