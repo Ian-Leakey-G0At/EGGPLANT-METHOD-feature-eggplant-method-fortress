@@ -53,7 +53,7 @@ const CourseAccessPage = () => {
     };
 
     verifyToken();
-  }, [token, courseId]);
+  }, [token, courseId, course]);
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 pt-4">
@@ -68,7 +68,7 @@ const CourseAccessPage = () => {
           <p className="text-red-300">{errorMessage}</p>
         </div>
       )}
-      {status === 'success' && (
+      {status === 'success' && course && (
         <div>
           {/* 1. The Video Player - Radically Simplified */}
           <div className="aspect-video mb-8">
