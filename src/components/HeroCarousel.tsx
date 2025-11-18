@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import VideoPlayer from './VideoPlayer';
-import { course } from '@/lib/course-data';
+import { courses } from '@/lib/course-data';
 
 const HeroCarousel = () => {
+  const course = courses.find(c => c.id === 'eggplant-method-v1');
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -34,10 +35,12 @@ const HeroCarousel = () => {
         <div className="flex">
           {/* Slide 1: Video Player - Radically Simplified */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
-            <VideoPlayer
-              url={course.teaserVideoUrl}
-              thumbnailUrl={course.teaserThumbnailUrl}
-            />
+            {course && (
+              <VideoPlayer
+                url={course.teaserVideoUrl}
+                thumbnailUrl={course.teaserThumbnailUrl}
+              />
+            )}
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">

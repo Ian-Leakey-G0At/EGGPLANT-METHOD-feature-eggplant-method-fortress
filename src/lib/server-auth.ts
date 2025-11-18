@@ -26,10 +26,10 @@ export async function verifyTokenOnServer(token: string, courseId: string): Prom
     const data = await response.json();
 
     // Final check to ensure the API responded as expected
-    if (data.success === true && data.courseId === courseId) {
+    if (data.isValid === true && data.fulfillmentId === courseId) {
       return { isValid: true, error: null };
     } else {
-      return { isValid: false, error: 'Token validation failed.' };
+      return { isValid: false, error: data.error || 'Token validation failed.' };
     }
 
   } catch (error) {
