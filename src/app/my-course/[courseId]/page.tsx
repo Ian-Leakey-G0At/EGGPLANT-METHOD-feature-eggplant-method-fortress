@@ -2,8 +2,8 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { courses } from '@/lib/course-data'; // Use the new centralized course data
-import VideoPlayer from '@/components/VideoPlayer'; // Import our new player
+import { courses } from '@/lib/course-data';
+import VideoPlayer from '@/components/VideoPlayer';
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
 
@@ -18,16 +18,26 @@ const CourseAccessPage = () => {
 
   const course = courses.find((c) => c.id === courseId);
 
+  // --- START OF THE "EARLY RETURN" PROTOCOL ---
+  // If the courseId from the URL doesn't match any course in our data,
+  // we don't even need to proceed with verification. We halt immediately.
+  if (!course) {
+    return (
+      <div className="w-full max-w-4xl mx-auto px-4 pt-4">
+        <div className="text-center p-8 bg-red-900/20 rounded-lg">
+          <h1 className="text-2xl font-bold text-red-400 mb-2">Invalid Course</h1>
+          <p className="text-red-300">The course you are trying to access does not exist.</p>
+        </div>
+      </div>
+    );
+  }
+  // --- END OF THE "EARLY RETURN" PROTOCOL ---
+
   useEffect(() => {
     const verifyToken = async () => {
+      // This check is now redundant because of the early return, but it's good practice.
       if (!token || !courseId) {
         setErrorMessage('Missing access token or course ID in URL.');
-        setStatus('error');
-        return;
-      }
-
-      if (!course) {
-        setErrorMessage(`Invalid course ID.`);
         setStatus('error');
         return;
       }
@@ -42,8 +52,13 @@ const CourseAccessPage = () => {
         if (response.ok) {
           setStatus('success');
         } else {
-          const errorData = await response.text();
-          setErrorMessage(errorData || 'Invalid or expired access link.');
+          // A more robust error parsing from the server response
+          try {
+            const errorData = await response.json();
+            setErrorMessage(errorData.error || 'Invalid or expired access link.');
+          } catch {
+            setErrorMessage('Invalid or expired access link. Failed to parse server response.');
+          }
           setStatus('error');
         }
       } catch (err) {
@@ -53,8 +68,11 @@ const CourseAccessPage = () => {
     };
 
     verifyToken();
-  }, [token, courseId, course]);
+    // The `course` object is stable and doesn't need to be in the dependency array.
+  }, [token, courseId]);
 
+  // If we've reached this part of the code, TypeScript now knows that `course` CANNOT be undefined.
+  // The early return acts as a type guard for the rest of the component.
   return (
     <div className="w-full max-w-4xl mx-auto px-4 pt-4">
       {status === 'verifying' && (
@@ -70,15 +88,13 @@ const CourseAccessPage = () => {
       )}
       {status === 'success' && course && (
         <div>
-          {/* 1. The Video Player - Radically Simplified */}
           <div className="aspect-video mb-8">
             <VideoPlayer
-              url={course.fullVideoUrl}
+              url={course.fullVideoUrl} // <-- This is now 100% type-safe.
               thumbnailUrl={course.fullThumbnailUrl}
             />
           </div>
 
-          {/* 2. The Description Component */}
           <section className="mb-12">
             <h1 className="text-3xl font-bold mb-2">{course.name}</h1>
             <p className="text-gray-400">
