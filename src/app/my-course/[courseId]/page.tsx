@@ -86,7 +86,7 @@ const CourseAccessPage = () => {
           <p className="text-red-300">{errorMessage}</p>
         </div>
       )}
-      {status === 'success' && (
+      {status === 'success' && course && (
         <div>
           <div className="aspect-video mb-8">
             <VideoPlayer
