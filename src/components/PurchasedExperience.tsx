@@ -109,8 +109,7 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
                     </summary>
                     <div className="text-gray-400 px-4 pb-4 group-open:animate-fadeIn space-y-4 text-base border-t border-gray-800 pt-4">
                         <p>
-                            The Simple 2-Step Method to Naturally Boost Length & Girth (watch
-                            the short video on the thumbnail first)
+                            The Simple 2-Step Method to Naturally Boost Length & Girth.
                         </p>
                         <p>
                             Let's cut through the noise. No pills. No surgery. No awkward
