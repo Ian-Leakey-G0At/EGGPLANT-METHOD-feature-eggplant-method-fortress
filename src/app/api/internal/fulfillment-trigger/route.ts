@@ -26,9 +26,17 @@ export async function POST(req: NextRequest) {
   }
 
   // 2. Parse Incoming Request Body
-  const { fulfillmentId, userEmail } = await req.json();
+  const body = await req.json();
+
+  // The service-connector sends: { eventType: "...", payload: { customerEmail: "...", courseId: "..." } }
+  // We need to handle both the direct format (for testing) and the nested format (from connector)
+  const data = body.payload || body;
+
+  const fulfillmentId = data.courseId || data.fulfillmentId;
+  const userEmail = data.customerEmail || data.userEmail;
+
   if (!fulfillmentId || !userEmail) {
-    return new NextResponse('Missing fulfillmentId or userEmail', { status: 400 });
+    return new NextResponse('Missing fulfillmentId (or courseId) or userEmail (or customerEmail)', { status: 400 });
   }
 
   // 3. Look up the purchased course from our master list
