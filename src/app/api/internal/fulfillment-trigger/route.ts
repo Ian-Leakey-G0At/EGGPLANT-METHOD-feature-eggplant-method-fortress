@@ -58,11 +58,12 @@ export async function POST(req: NextRequest) {
     await redis.set(tokenKey, JSON.stringify(tokenData), { ex: ONE_YEAR_IN_SECONDS });
 
     // 6. Construct the Access URL
-    const accessUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/my-course/${purchasedCourse.id}?token=${token}`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://eggplant-method.vercel.app';
+    const accessUrl = `${baseUrl}/my-course/${purchasedCourse.id}?token=${token}`;
 
     // 7. Send the Access Email via Resend
     const { data, error } = await resend.emails.send({
-      from: 'Commander <noreply@yourdomain.com>',
+      from: 'Commander <onboarding@resend.dev>',
       to: [userEmail],
       subject: `Your Access to: ${purchasedCourse.name}`,
       react: AccessEmail({ accessUrl, courseTitle: purchasedCourse.name }),
