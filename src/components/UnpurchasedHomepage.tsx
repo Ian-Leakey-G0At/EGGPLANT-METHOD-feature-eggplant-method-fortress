@@ -35,23 +35,23 @@ export function UnpurchasedHomepage() {
                                 </h1>
                                 <div className="flex items-center gap-2 mt-2">
                                     <p className="text-4xl font-bold text-lime-400">$22.30</p>
-                                    <span className="text-lime-500/80 font-mono text-sm tracking-wider pt-2">
-                                        (1302)
-                                    </span>
+                                    <div className="flex items-center gap-2 pt-2">
+                                        <span className="text-lime-500/80 font-mono text-sm tracking-wider">
+                                            (1302)
+                                        </span>
+                                        <span className="text-lime-500 font-bold text-sm bg-lime-500/10 px-2 py-0.5 rounded border border-lime-500/20">
+                                            [4.7 stars]
+                                        </span>
+                                    </div>
                                 </div>
                             </section>
 
                             {/* Reviews */}
                             <section className="mt-4">
                                 <div className="flex justify-between items-center mb-2">
-                                    <div className="flex items-center gap-2">
-                                        <h2 className="text-lg font-semibold text-gray-300">
-                                            Customer reviews
-                                        </h2>
-                                        <span className="text-lime-500 font-bold text-sm bg-lime-500/10 px-2 py-0.5 rounded border border-lime-500/20">
-                                            [4.7 stars]
-                                        </span>
-                                    </div>
+                                    <h2 className="text-lg font-semibold text-gray-300">
+                                        Customer reviews
+                                    </h2>
                                     <Link
                                         className="text-sm font-medium text-lime-500 flex items-center"
                                         href="/proof"

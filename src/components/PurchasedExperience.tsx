@@ -33,7 +33,12 @@ const PloyRatingSystem = () => {
                 </div>
             ) : (
                 <div className="animate-fadeIn">
-                    <h3 className="text-lg font-bold mb-4 text-white">Share Your Results</h3>
+                    <div className="flex items-center gap-3 mb-4">
+                        <h3 className="text-lg font-bold text-white">Share Your Results</h3>
+                        <span className="text-lime-500 font-bold text-sm bg-lime-500/10 px-2 py-0.5 rounded border border-lime-500/20">
+                            [4.7 stars]
+                        </span>
+                    </div>
 
                     {/* Stars */}
                     <div className="flex space-x-2 mb-4">
@@ -62,8 +67,8 @@ const PloyRatingSystem = () => {
                         onClick={handleSubmit}
                         disabled={rating === 0}
                         className={`w-full py-3 rounded-md font-bold transition-all duration-200 ${rating > 0
-                                ? 'bg-lime-500 text-black hover:bg-lime-400 transform hover:scale-[1.02]'
-                                : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                            ? 'bg-lime-500 text-black hover:bg-lime-400 transform hover:scale-[1.02]'
+                            : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                             }`}
                     >
                         Post Review
