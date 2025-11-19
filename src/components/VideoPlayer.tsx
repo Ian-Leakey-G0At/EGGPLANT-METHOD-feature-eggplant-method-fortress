@@ -32,21 +32,20 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
   const [isActivated, setIsActivated] = useState(false);
-  const playerRef = useRef<any>(null);
 
-  const handleReady = useCallback(() => {
-    // This is the definitive fix:
-    // We directly command the internal player instance to play.
-    // This bypasses any declarative prop race conditions and respects browser autoplay policies when muted.
-    if (playerRef.current) {
-      const internalPlayer = playerRef.current.getInternalPlayer();
-      if (internalPlayer) {
-        internalPlayer.play().catch((error: any) => {
-          console.error("Video play failed:", error);
-        });
-      }
+  // Extract Dailymotion ID from URL
+  // Supports: https://www.dailymotion.com/video/ID or https://dai.ly/ID
+  const getDailymotionId = (videoUrl: string) => {
+    if (videoUrl.includes('/video/')) {
+      return videoUrl.split('/video/')[1];
     }
-  }, []);
+    if (videoUrl.includes('dai.ly/')) {
+      return videoUrl.split('dai.ly/')[1];
+    }
+    return null;
+  };
+
+  const videoId = getDailymotionId(url);
 
   if (!isActivated) {
     return (
@@ -61,22 +60,28 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
     );
   }
 
-  // We need to cast the type to include the 'ref' prop.
-  const TypedPlayer = ReactPlayerClient as React.ComponentType<ReactPlayerProps & { ref: React.Ref<any> }>;
+  // Fallback if ID extraction fails (shouldn't happen with correct data)
+  if (!videoId) {
+    return <div className="w-full h-full bg-black flex items-center justify-center text-white">Invalid Video URL</div>;
+  }
 
   return (
-    <div className="relative aspect-[16/9]">
-      <TypedPlayer
-        ref={playerRef}
-        url={url}
-        playing={true} // Keep this for players that do respond to it
-        onReady={handleReady}
-        width="100%"
-        height="100%"
-        controls={true}
-        muted={true} // Muting is essential for autoplay
-        className="absolute top-0 left-0"
-      />
+    <div className="relative w-full h-full aspect-[16/9] bg-black overflow-hidden">
+      <iframe
+        src={`https://geo.dailymotion.com/player.html?video=${videoId}`}
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          left: '0px',
+          top: '0px',
+          overflow: 'hidden',
+          border: 'none',
+        }}
+        allowFullScreen
+        title="Dailymotion Video Player"
+        allow="web-share; autoplay; fullscreen; picture-in-picture"
+      ></iframe>
     </div>
   );
 };

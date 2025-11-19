@@ -6,10 +6,10 @@ import { PurchasedExperience } from "@/components/PurchasedExperience";
 const COURSE_ID = 'eggplant-method-v1';
 
 interface HomeProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-async function verifyTokenOnServer(token: string) {
+async function verifyTokenOnServer(token: string, courseId: string) {
   // Construct the verification URL from environment variables
   const verifyUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-code`;
 
@@ -19,7 +19,7 @@ async function verifyTokenOnServer(token: string) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ token, courseId }),
       cache: 'no-store', // Always perform a fresh check
     });
 
@@ -38,7 +38,8 @@ async function verifyTokenOnServer(token: string) {
 }
 
 export default async function HomePage({ searchParams }: HomeProps) {
-  const token = searchParams?.token as string | undefined;
+  const resolvedSearchParams = await searchParams;
+  const token = resolvedSearchParams?.token as string | undefined;
 
   if (!token) {
     // State 1: No token, render the public-facing sales page.
@@ -46,7 +47,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
   }
 
   // State 2: Token exists, verify it on the server.
-  const { isValid } = await verifyTokenOnServer(token);
+  const { isValid } = await verifyTokenOnServer(token, COURSE_ID);
 
   if (isValid) {
     // State 2a: Token is valid, render the private, purchased content.

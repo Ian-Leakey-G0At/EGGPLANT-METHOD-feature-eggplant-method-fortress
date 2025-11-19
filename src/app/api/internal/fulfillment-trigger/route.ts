@@ -7,15 +7,15 @@ import { courses } from '@/lib/course-data'; // Corrected import
 
 // Initialize Redis and Resend clients
 const redis = Redis.fromEnv();
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.EGGPLANT_METHOD_RESEND_API_KEY);
 
 // The shared secret for validating incoming requests
-const SHARED_SECRET = process.env.INTERNAL_API_SECRET;
+const SHARED_SECRET = process.env.EGGPLANT_METHOD_INTERNAL_SECRET_KEY;
 
 // Interface for the token data to be stored in Redis
 interface TokenData {
-    fulfillmentId: string; 
-    userEmail: string;
+  fulfillmentId: string;
+  userEmail: string;
 }
 
 export async function POST(req: NextRequest) {
