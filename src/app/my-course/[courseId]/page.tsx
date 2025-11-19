@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { courses } from '@/lib/course-data';
 import VideoPlayer from '@/components/VideoPlayer';
+import { PurchasedExperience } from '@/components/PurchasedExperience';
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
 
@@ -87,21 +88,7 @@ const CourseAccessPage = () => {
         </div>
       )}
       {status === 'success' && course && (
-        <div>
-          <div className="aspect-video mb-8">
-            <VideoPlayer
-              url={course.fullVideoUrl} // <-- This is now 100% type-safe.
-              thumbnailUrl={course.fullThumbnailUrl}
-            />
-          </div>
-
-          <section className="mb-12">
-            <h1 className="text-3xl font-bold mb-2">{course.name}</h1>
-            <p className="text-gray-400">
-              A detailed summary of the course content goes here...
-            </p>
-          </section>
-        </div>
+        <PurchasedExperience courseId={courseId} />
       )}
     </div>
   );
