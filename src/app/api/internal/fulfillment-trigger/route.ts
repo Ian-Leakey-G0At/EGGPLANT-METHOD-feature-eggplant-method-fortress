@@ -27,12 +27,17 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Parse Payload
+    // 2. Parse Payload
     const body = await request.json();
     // Handle nested payload from service-connector
     const data = body.payload || body;
-    const { fulfillmentId, userEmail } = data;
+
+    // Handle aliases: Connector uses (customerEmail, courseId), Internal uses (userEmail, fulfillmentId)
+    const fulfillmentId = data.fulfillmentId || data.courseId;
+    const userEmail = data.userEmail || data.customerEmail;
 
     if (!fulfillmentId || !userEmail) {
+      console.error('Missing fields. Received:', data);
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
