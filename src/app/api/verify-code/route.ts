@@ -6,8 +6,8 @@ import { Redis } from '@upstash/redis';
 const redis = Redis.fromEnv();
 
 interface TokenData {
-    fulfillmentId: string;
-    userEmail: string;
+  fulfillmentId: string;
+  userEmail: string;
 }
 
 /**
@@ -24,7 +24,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const tokenKey = `token:${token}`;
+    // 2. Look up the token in Redis
+    // Note: The token itself is the key, as set in fulfillment-trigger/route.ts
+    const tokenKey = token;
 
     // 2. Look up the token in Redis
     const data = await redis.get<TokenData>(tokenKey);
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     // 3. **CRITICAL:** Verify the token is for the correct course.
     if (data.fulfillmentId !== courseId) {
-        return NextResponse.json({ isValid: false, error: 'Token is not valid for this course.' }, { status: 403 });
+      return NextResponse.json({ isValid: false, error: 'Token is not valid for this course.' }, { status: 403 });
     }
 
     // 4. Per the "Durable Key" model, we do not burn the token on read.
