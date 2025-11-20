@@ -3,18 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
-    @apply bg-background-dark text-gray-300;
+    @apply bg-background-dark text-gray-300 overflow-x-hidden w-full relative;
+    max-width: 100%;
+    overscroll-behavior-x: none;
+  }
+
+  /* This wrapper prevents the marquee animation from physically expanding the page width */
+  .overflow-guard {
+    @apply w-full overflow-hidden relative;
+  }
+
+  .kinetic-stage {
+    @apply w-full relative overflow-hidden;
+    /* Force hardware acceleration on the container to assist masking */
+    transform: translateZ(0);
   }
 }
 
 @layer utilities {
   .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
+
   .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+    display: none;
+    /* Safari and Chrome */
   }
 }
 
@@ -22,6 +44,7 @@
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0%);
   }
@@ -31,7 +54,31 @@
   from {
     transform: translateX(0%);
   }
+
   to {
     transform: translateX(-100%);
+  }
+}
+
+/* Custom Keyframes for Kinetic Grid */
+@keyframes oscillating-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-20%);
+  }
+
+  /* Adjust percentage based on overscan width */
+}
+
+@keyframes oscillating-right {
+  0% {
+    transform: translateX(-20%);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }
