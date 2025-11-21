@@ -10,7 +10,7 @@ const ReactPlayerClient = dynamic(() => import('react-player'), { ssr: false });
 // A clean, reusable Play icon component
 const PlayIcon = () => (
   <svg
-    className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110"
+    className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110 drop-shadow-lg"
     xmlns="http://www.w3.org/2000/svg"
     width="48"
     height="48"
@@ -57,7 +57,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, thumbnailUrl }) => {
         style={{ backgroundImage: `url(${thumbnailUrl})` }}
         onClick={() => setIsActivated(true)}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition-all duration-300"></div>
         <PlayIcon />
       </div>
     );

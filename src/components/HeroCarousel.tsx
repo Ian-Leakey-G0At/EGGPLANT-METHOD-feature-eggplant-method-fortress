@@ -39,14 +39,14 @@ const HeroCarousel = () => {
             {course && (
               <VideoPlayer
                 url={course.teaserVideoUrl}
-                thumbnailUrl="/hero_thumbnails/hero-thumbnail-1.png"
+                thumbnailUrl="https://i.pinimg.com/736x/39/eb/de/39ebde3b6432f7e7f8785211531346b9.jpg"
               />
             )}
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
             <img
-              src="/hero_thumbnails/hero-thumbnail-2.png"
+              src="https://i.pinimg.com/736x/53/b1/c1/53b1c1887c617adaa7d8766c174563e1.jpg"
               alt="Promotional Image 1"
               className="w-full h-full object-cover"
             />
@@ -60,14 +60,14 @@ const HeroCarousel = () => {
               >
                 {/* Thumbnail Facade */}
                 <img
-                  src="/hero_thumbnails/hero-thumbnail-3.png"
+                  src="https://i.pinimg.com/736x/e7/ed/80/e7ed8072a449dcb9b8cf6ad3d8502d33.jpg"
                   alt="Play Video"
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                  className="w-full h-full object-cover group-hover:opacity-100 transition-opacity duration-700"
                 />
 
                 {/* The Play Button Overlay */}
                 <svg
-                  className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110"
+                  className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110 drop-shadow-lg"
                   xmlns="http://www.w3.org/2000/svg"
                   width="48"
                   height="48"
