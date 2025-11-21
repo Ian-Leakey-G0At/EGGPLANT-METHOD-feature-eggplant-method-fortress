@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import VideoPlayer from './VideoPlayer';
 import { courses } from '@/lib/course-data';
 
 // The Engagement Ploy: Interactive Rating System
@@ -88,12 +87,30 @@ export function PurchasedExperience({ courseId }: { courseId: string }) {
 
     return (
         <div className="w-full max-w-[1400px] mx-auto px-4 pt-4 pb-20 flex flex-col gap-4">
-            {/* 1. The Video Player */}
-            <div className="aspect-video w-full rounded-xl overflow-hidden bg-[#050505] border border-white/5 shadow-2xl">
-                <VideoPlayer
-                    url={course.fullVideoUrl}
-                    thumbnailUrl={course.fullThumbnailUrl}
+            {/* 1. The Course Access Link (Formerly Video Player) */}
+            <a
+                href="https://drive.google.com/drive/folders/1vwhvjzRTxh1zyOsLzffktJ2hUJu2i6kD?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block aspect-video w-full rounded-xl overflow-hidden bg-[#050505] border border-white/5 shadow-2xl relative hover:border-lime-400/30 transition-all duration-300"
+            >
+                <img
+                    src="/course-access-thumbnail.webp"
+                    alt="Access Course Content"
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                 />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-black/60 backdrop-blur-sm border border-white/10 px-6 py-3 rounded-full group-hover:bg-black/80 group-hover:scale-105 transition-all duration-300">
+                        <span className="text-white font-medium tracking-wide">Access Course Content</span>
+                    </div>
+                </div>
+            </a>
+
+            {/* Instruction Text */}
+            <div className="w-full text-center py-2">
+                <p className="text-lime-400 text-sm font-medium tracking-widest uppercase animate-pulse">
+                    [Tap Image To Access Course Content]
+                </p>
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4">

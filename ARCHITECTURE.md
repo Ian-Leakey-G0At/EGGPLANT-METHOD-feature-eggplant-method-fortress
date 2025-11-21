@@ -32,5 +32,5 @@ graph TD
     H -- Clicks Access Link --> I[Course Access Page];
     I -- Verifies Token --> E;
     E -- Confirms with --> F;
-    I -- Renders Video --> J[(Course Content)];
+    I -- Displays Link --> J[(Google Drive)];
 ```

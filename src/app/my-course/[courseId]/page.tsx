@@ -3,7 +3,6 @@
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { courses } from '@/lib/course-data';
-import VideoPlayer from '@/components/VideoPlayer';
 import { PurchasedExperience } from '@/components/PurchasedExperience';
 
 type VerificationStatus = 'verifying' | 'success' | 'error';
