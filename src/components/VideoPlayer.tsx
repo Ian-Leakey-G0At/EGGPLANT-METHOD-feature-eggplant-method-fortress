@@ -10,18 +10,21 @@ const ReactPlayerClient = dynamic(() => import('react-player'), { ssr: false });
 // A clean, reusable Play icon component
 const PlayIcon = () => (
   <svg
-    className="absolute inset-0 m-auto h-20 w-20 text-white opacity-75 transition-opacity group-hover:opacity-100"
+    className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110"
     xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
   >
-    <path
-      fill="currentColor"
-      fillRule="evenodd"
-      d="M10 18a8 8 0 1 0 0-16a8 8 0 0 0 0 16M9.555 7.168A1 1 0 0 0 8 8v4a1 1 0 0 0 1.555.832l3-2a1 1 0 0 0 0-1.664z"
-      clipRule="evenodd"
-    />
+    <defs>
+      <mask id="SVGOVEmxbON">
+        <g fill="#555555" stroke="#fff" strokeLinejoin="round" strokeWidth="4">
+          <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+          <path d="M20 24v-6.928l6 3.464L32 24l-6 3.464l-6 3.464z" />
+        </g>
+      </mask>
+    </defs>
+    <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGOVEmxbON)" />
   </svg>
 );
 

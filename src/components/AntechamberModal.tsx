@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 interface AntechamberModalProps {
   isOpen: boolean;
@@ -41,9 +42,14 @@ export const AntechamberModal = ({ isOpen, redirectUrl, onClose }: AntechamberMo
           </svg>
         </button>
 
-        <div className="w-full aspect-video bg-gray-900 rounded-md mb-4 flex items-center justify-center">
-          {/* TODO: The Commander to replace this with the final "digital keycard" asset. */}
-          <span className="text-gray-500 text-sm">Image Placeholder (16:9)</span>
+        <div className="relative w-full aspect-video bg-gray-900 rounded-md mb-4 overflow-hidden shadow-lg border border-white/10">
+          <Image
+            src="/antechamber_image/eggplant-method-1.png"
+            alt="Secure Acquisition Keycard"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
         <h2 id="modal-title" className="text-xl font-bold text-white mb-2">

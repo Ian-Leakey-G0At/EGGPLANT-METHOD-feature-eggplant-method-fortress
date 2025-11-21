@@ -39,14 +39,14 @@ const HeroCarousel = () => {
             {course && (
               <VideoPlayer
                 url={course.teaserVideoUrl}
-                thumbnailUrl={course.teaserThumbnailUrl}
+                thumbnailUrl="/hero_thumbnails/hero-thumbnail-1.png"
               />
             )}
           </div>
           {/* Slide 2: Image */}
           <div className="relative flex-[0_0_100%] aspect-[16/9]">
             <img
-              src="https://picsum.photos/seed/hero1/1280/720"
+              src="/hero_thumbnails/hero-thumbnail-2.png"
               alt="Promotional Image 1"
               className="w-full h-full object-cover"
             />
@@ -60,19 +60,29 @@ const HeroCarousel = () => {
               >
                 {/* Thumbnail Facade */}
                 <img
-                  src="https://picsum.photos/seed/hero2/1280/720"
+                  src="/hero_thumbnails/hero-thumbnail-3.png"
                   alt="Play Video"
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
                 />
 
                 {/* The Play Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-all duration-300 backdrop-blur-sm">
-                    <svg className="w-8 h-8 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
+                <svg
+                  className="absolute bottom-8 right-8 w-12 h-12 text-white opacity-100 transition-transform duration-300 group-hover:scale-110"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 48 48"
+                >
+                  <defs>
+                    <mask id="SVGOVEmxbON_hero">
+                      <g fill="#555555" stroke="#fff" strokeLinejoin="round" strokeWidth="4">
+                        <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                        <path d="M20 24v-6.928l6 3.464L32 24l-6 3.464l-6 3.464z" />
+                      </g>
+                    </mask>
+                  </defs>
+                  <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGOVEmxbON_hero)" />
+                </svg>
               </div>
             ) : (
               <div className="w-full h-full relative bg-black">
